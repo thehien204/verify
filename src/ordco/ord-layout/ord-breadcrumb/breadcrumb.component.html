@@ -1,0 +1,10 @@
+<div class='ord-breadcrumb'>
+  <nz-breadcrumb [nzSeparator]='iconTemplate'>
+    <ng-container *ngFor='let breadItem of  breadcrumb'>
+      <nz-breadcrumb-item>
+        <app-ord-breadcrumb-item [breadItem]="breadItem"></app-ord-breadcrumb-item>
+      </nz-breadcrumb-item>
+    </ng-container>
+  </nz-breadcrumb>
+  <ng-template #iconTemplate><i nz-icon nzType='arrow-right'></i></ng-template>
+</div>

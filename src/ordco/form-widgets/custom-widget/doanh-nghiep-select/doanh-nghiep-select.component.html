@@ -1,0 +1,72 @@
+<form [formGroup]="schemaModel.form">
+  <nz-select [formControlName]="field.dataField"
+             nzAllowClear
+             nzShowSearch
+             nzServerSearch
+             (nzOnSearch)="onSearch($event)"
+             [nzNotFoundContent]="notFoundTpl"
+             nzOptionHeightPx="90"
+             nzPlaceHolder="Nhập tên/ giấy phép kinh doanh/ điện thoại để tìm kiếm">
+    <nz-option *ngFor="let record of listDoanhNghiep"
+               nzCustomContent
+               [nzLabel]="record.ten"
+               [nzValue]="'' + record.id">
+      <ng-container [ngTemplateOutlet]="thongTinDoanhNghiepTpl"
+                    [ngTemplateOutletContext]="{doanhNghiepDto:record}"></ng-container>
+    </nz-option>
+    <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+      <i nz-icon nzType="loading" class="loading-icon"></i>
+      Đang tìm kiếm dữ liệu...
+    </nz-option>
+  </nz-select>
+</form>
+<ng-template #notFoundTpl>
+  <span *ngIf="!(filter.length >= 3)">Nhập ít nhất 3 ký tự để tìm kiếm</span>
+  <span *ngIf="filter.length >= 3">Không có thông tin doanh nghiệp phù hợp</span>
+</ng-template>
+<ng-template #thongTinDoanhNghiepTpl let-record="doanhNghiepDto">
+  <div class="thong-tin-dn" style="min-height: 90px">
+    <div class="text-primary ps-6">
+      <b>{{record.ten}}</b>
+    </div>
+    <div nz-row>
+      <div nz-col nzFlex="20px">
+        <span class="me-2"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+      </div>
+      <div nz-col nzFlex="auto">
+        <div *ngIf="record.diaChi">
+               <span>
+                {{record.diaChi }}
+              </span>
+        </div>
+        <div *ngIf="record.maXa">
+              <span *ngIf="record.maXa">
+              {{record.maXa | xaDisplayText :record.maHuyen |async }} -
+            </span>
+          <span *ngIf="record.maHuyen">
+              {{record.maHuyen | huyenDisplayText: record.maTinh |async }}  -
+            </span>
+          <span *ngIf="record.maTinh">
+              {{record.maTinh | tinhDisplayText |async }}
+            </span>
+        </div>
+      </div>
+    </div>
+    <div>
+            <span *ngIf="record.soDienThoai">
+             <i class="fa fa-phone-square me-2" aria-hidden="true"></i>
+              {{record.soDienThoai }}
+            </span>
+      <span class="ms-5" *ngIf="record.email">
+              <i class="fa fa-envelope me-2" aria-hidden="true"></i>
+        {{record.email }}
+            </span>
+    </div>
+  </div>
+</ng-template>
+
+<div *ngIf="doanhNghiepSelected">
+  <h5 class="mt-2">Thông tin doanh nghiệp:</h5>
+  <ng-container [ngTemplateOutlet]="thongTinDoanhNghiepTpl"
+                [ngTemplateOutletContext]="{doanhNghiepDto:doanhNghiepSelected}"></ng-container>
+</div>

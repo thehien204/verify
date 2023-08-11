@@ -1,0 +1,123 @@
+<button nz-button nzType="default" class="me-2" (click)="showModal()">
+  <i nz-icon nzType="cloud-upload" nzTheme="outline"></i>
+  Upload excel
+</button>
+<nz-modal
+  [nzMaskClosable]="false"
+  [nzWidth]="width"
+  [(nzVisible)]="isVisible"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel()"
+>
+  <ng-template #modalTitle>
+    <h4>Upload sản phẩm từ excel cho doanh nghiệp</h4>
+  </ng-template>
+
+  <ng-template #modalContent>
+    <h5 class="mb-3">{{doanhNghiepDto?.maDoanhNghiep}} - {{doanhNghiepDto?.ten}}</h5>
+    <ng-container *ngIf="fileList.length===0">
+      <nz-upload nzType="drag" [nzMultiple]="false"
+                 [nzBeforeUpload]="beforeUpload"
+                 [(nzFileList)]="fileList"
+                 [nzShowButton]="fileList.length < 1"
+      >
+        <p class="ant-upload-drag-icon">
+          <i nz-icon nzType="inbox"></i>
+        </p>
+        <p class="ant-upload-text">Click or drag file to this area to upload</p>
+      </nz-upload>
+      <div class="mt-3">
+        <a href="assets/web-resources/sample-file/verify-upload-san-pham.xlsx">
+          <i nz-icon class="me-2"
+             nzType="cloud-download"
+             nzTheme="outline"></i> Tải file mẫu</a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="kiemTraResult">
+      <nz-tabset>
+        <nz-tab nzTitle="Danh sách hợp lệ ({{kiemTraResult.listHopLe.length}})">
+          <button *ngIf="kiemTraResult.listHopLe.length>0" class="mt-3 mb-2"
+                  nz-button nzType="primary" (click)="saveExcel()">
+            <i nz-icon nzType="save" nzTheme="outline"></i>
+            Lưu danh sách hợp lệ
+          </button>
+          <nz-table [nzData]="kiemTraResult.listHopLe"
+                    [nzScroll]="{ x: '1150px', y: '360px' }"
+                    [nzFrontPagination]="false"
+                    [nzShowPagination]="false"
+                    nzTableLayout="fixed">
+            <thead>
+            <tr>
+              <th nzWidth="150px">GTIN</th>
+              <th nzWidth="250px">Tên sản phẩm</th>
+              <th nzWidth="150px">Hình ảnh</th>
+              <th>Mô tả</th>
+              <th>Thị trường mục tiêu</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of kiemTraResult.listHopLe">
+              <td>{{data.ma}}</td>
+              <td>{{data.ten}}</td>
+              <td>
+                <ng-container *ngIf="data.imageLinks?.length>0">
+                  <img src="{{data.imageLinks[0]}}" alt="" height="90">
+                </ng-container>
+              </td>
+              <td nzEllipsis>
+                {{data.moTa}}
+              </td>
+              <td>{{data.thiTruongMucTieu}}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+        <nz-tab nzTitle="Danh sách lỗi ({{kiemTraResult.listLoi.length}})">
+          <nz-table [nzData]="kiemTraResult.listLoi"
+                    [nzScroll]="{ x: '1150px', y: '360px' }"
+                    [nzFrontPagination]="false"
+                    [nzShowPagination]="false"
+                    nzTableLayout="fixed">
+            <thead>
+            <tr>
+              <th>GTIN</th>
+              <th>Tên sản phẩm</th>
+              <th>Chi tiết lỗi</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of kiemTraResult.listLoi">
+              <td>{{data.ma}}</td>
+              <td>{{data.ten}}</td>
+              <td>
+                <div *ngFor="let err of data.errors">
+                  <span class="text-danger">- {{err.errorMessage}}</span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+      </nz-tabset>
+    </ng-container>
+
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button *ngIf="kiemTraResult && kiemTraResult.listHopLe.length>0" class="mt-3 mb-2"
+            nz-button nzType="primary" (click)="saveExcel()">
+      <i nz-icon nzType="save" nzTheme="outline"></i>
+      Lưu danh sách hợp lệ
+    </button>
+    <button *ngIf="fileList && fileList?.length >0" nzDanger
+            nz-button
+            nzType="default"
+            (click)="selectFileOther()">
+      Chọn file khác
+    </button>
+    <button nz-button nzType="default" (click)="handleCancel()">Đóng</button>
+  </ng-template>
+</nz-modal>

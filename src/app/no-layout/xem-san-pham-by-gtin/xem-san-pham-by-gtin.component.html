@@ -1,0 +1,167 @@
+<div class="card-sp container-sp" style="width:100% !important">
+  <div class="title" style="background:#ffffff; padding:10px !important;">  
+    <img src="../../assets/images/icon/Logo_Full.png" style="width: 159px !important;" />
+  </div>
+  <div class="content-card" *ngIf="ttSanPham$|async as ttSanPham">
+    <nz-row class="thong-tin-chung" nzGutter="40" style="padding:0px !important;">
+      <nz-col nzLg="24" nzSm="24">
+        <div class="anh">
+          <img [src]="anhSp"/>
+          <div class="info">
+            <div class="is-not-verify" *ngIf="!ttSanPham.isVerify">              
+              <div style="background-image: url('../../assets/images/icon/icon_White.png');"></div>
+              <div style="padding-bottom: 4px !important;">Chưa xác thực</div>
+              <div>Thông tin sản phẩm do Doanh nghiệp tự kê khai và chưa được xác thực từ Trung tâm Mã số, Mã vạch Quốc gia</div>
+            </div>
+            <div class="is-verify" *ngIf="ttSanPham.isVerify">
+              <div style="background-image: url('../../assets/images/icon/icon_White.png');"></div>
+              <div style="padding-bottom: 4px !important;">Đã xác thực</div>
+              <div>Thông tin sản phẩm do Doanh nghiệp tự kê khai và đã được xác thực từ Trung tâm Mã số, Mã vạch Quốc gia</div>
+            </div>
+          </div>
+        </div>
+      </nz-col>
+      <nz-col nzLg="16" nzSm="24" class="thong-tin" style="margin-left: 20px !important; padding-left: 20px; padding-top: 5px !important; padding-right: 20px;">
+        <h1 class="ten-sp" style="font-size:21px !important;">{{ttSanPham.ten}}</h1>
+        <div nz-row [nzGutter]="[32,32]">
+          <nz-col nzFlex="1 1 100px">
+            <div class="diem">
+              <nz-rate nzAllowHalf [ngModel]="ttSanPham.diemTrungBinh"></nz-rate>
+            </div>            
+            <!-- <div class="gia" *ngIf="ttSanPham.giaThamKhao > '0'">{{ttSanPham.giaThamKhao}} đ</div>             -->
+            <div class="gia" *ngIf="ttSanPham.giaThamKhao > '0'">{{ttSanPham.giaThamKhao | number:0}}đ</div>            
+          </nz-col>
+          <nz-col nzFlex="0 1 240px">
+            <div>
+              <img style="width: 100%" [src]="barCodeLink(ttSanPham.gtin)"/>
+            </div>
+          </nz-col>
+        </div>
+      </nz-col>
+      <nz-col nzLg="24" nzSm="24" class="thong-tin" style="margin-left: 20px !important; padding-left: 20px !important; padding-top: 5px !important; width: 100%;">
+        <div class="chung-chi">
+          <div class="tieu-de">Giấy chứng nhận</div>
+          <nz-row nzGutter="24" *ngIf="ttSanPham.giayChungNhanUrls" style="width:100% !important ; height:120px !important; float: left; display: block;">
+            <nz-col nzSpan="24" *ngFor="let imgSrc of ttSanPham.giayChungNhanUrls" style="width:86.47px !important ; height:120px !important; display: block; float: left;">
+              <img [src]="imgSrc" style="width:86.47px !important ; height:120px !important;"/>
+            </nz-col>
+          </nz-row>
+        </div>
+      </nz-col>
+      <nz-col nzSpan="24">
+        <nz-tabset style="margin-left: 20px !important; padding-left: 0px !important; padding-right: 0px !important;">
+          <nz-tab nzTitle="Thông tin doanh nghiệp">
+            <b>Tên doanh nghiệp:</b><div [innerText]="ttSanPham.doanhNghiep?.tenDoanhNghiep"></div>
+            <b>Địa chỉ:</b><div [innerText]="ttSanPham.doanhNghiep?.diaChiDayDu"></div>
+            <b>Điện thoại:</b><div [innerText]="ttSanPham.doanhNghiep?.dienThoai"></div>
+            <b>Mã số thuế:</b><div [innerText]="ttSanPham.doanhNghiep?.maSoThue"></div>
+          </nz-tab>
+          <nz-tab nzTitle="Thông tin sản phẩm">
+            <div [innerText]="ttSanPham.moTa"></div>
+          </nz-tab>
+        </nz-tabset>
+      </nz-col>
+    </nz-row>
+
+    <!-- <nz-row nzLg="24" nzSm="24" class="sp-lien-quan">
+      <h5 class="content-title"  style="margin-left: 20px !important; padding-left: 0px !important; padding-right: 0px !important;">Sản phẩm liên quan</h5>
+      <nz-row nzLg="12" nzSm="12" [nzGutter]="[32,32]" *ngIf="lstSpCungLoai$|async as lst">
+        <nz-col nzLg="6" *ngFor="let data of lst" [routerLink]="['/xem/san-pham-gtin/', data.gtin]">
+          <div class="item-sp" style="padding:0px !important;">
+            <img [src]="data.pictureUrls[0]? data.pictureUrls[0]: imgLinkDefault"/>
+            <div class="is-verify" *ngIf="data.isVerify">Đã xác thực</div>
+            <div class="is-not-verify" *ngIf="!data.isVerify">Chưa xác thực</div>
+            <div class="ten-sp">{{data.ten}}</div>
+            <div class="diem">
+              <nz-rate nzAllowHalf [ngModel]="data.diemTrungBinh"></nz-rate>
+              ({{data.diemTrungBinh}})
+            </div>
+            <div class="gia" *ngIf="data.giaThamKhao > '0'">{{data.giaThamKhao | number:0}}đ</div>
+          </div>
+        </nz-col>
+      </nz-row>
+    </nz-row> -->
+
+    <!-- <div class="item-sp" style="margin-left: 9px !important; padding: 0px !important; text-align: center; float: left; margin-bottom: 10px;"> -->    
+    <div class="sp-lien-quan" style="padding: 0px !important; margin: 0px !important;">
+      <nz-row nzLg="24" nzSm="24" class="thong-tin" style="margin-left: 20px !important; padding-left: 0px !important; padding-top: 5px !important; width: 100%;">
+        <h5 class="content-title" >Sản phẩm liên quan</h5>
+      </nz-row>          
+      <nz-row [nzGutter]="[32,32]" *ngIf="lstSpCungLoai$|async as lst" class="GroupItem">
+        <nz-col class="GroupItemDetail" nzLg="6" nzMd="6" nzSm="6" *ngFor="let data of lst" [routerLink]="['/xem/san-pham-gtin/', data.gtin]" >          
+          <div class="item-sp" style="max-width:180px !important;">
+            <img class="ImgItemStyle" [src]="data.pictureUrls[0]? data.pictureUrls[0]: imgLinkDefault"/>
+            <div class="is-verify" *ngIf="data.isVerify">Đã xác thực</div>
+            <div class="is-not-verify" *ngIf="!data.isVerify">Chưa xác thực</div>
+            <div class="ten-sp">{{data.ten}}</div>
+            <div class="diem">
+              <nz-rate nzAllowHalf [ngModel]="data.diemTrungBinh"></nz-rate>              
+            </div>            
+            <div class="gia" *ngIf="data.giaThamKhao > '0'">{{data.giaThamKhao | number:0}}đ</div>
+          </div>
+        </nz-col>
+      </nz-row>
+    </div>
+
+
+    <!-- <div class="sp-lien-quan" style="margin-left: 20px !important; padding-left: 0px !important; padding-right: 0px !important;">
+      <h5 class="content-title" >Sản phẩm liên quan</h5>
+      <nz-row [nzGutter]="[32,32]" *ngIf="lstSpCungLoai$|async as lst">
+        <nz-col nzLg="6" nzMd="12" nzSm="12" *ngFor="let data of lst" [routerLink]="['/xem/san-pham-gtin/', data.gtin]">
+          <div class="item-sp">
+            <img [src]="data.pictureUrls[0]? data.pictureUrls[0]: imgLinkDefault"/>
+            <div class="is-verify" *ngIf="data.isVerify">Đã xác thực</div>
+            <div class="is-not-verify" *ngIf="!data.isVerify">Chưa xác thực</div>
+            <div class="ten-sp">{{data.ten}}</div>
+            <div class="diem">
+              <nz-rate nzAllowHalf [ngModel]="data.diemTrungBinh"></nz-rate>
+              ({{data.diemTrungBinh}})
+            </div>
+            <div class="gia" *ngIf="data.giaThamKhao > '0'">{{data.giaThamKhao | number:0}}đ</div>
+          </div>
+        </nz-col>
+      </nz-row>
+    </div> -->
+    <!-- <div class="nhan-xet-sp" style="margin-left: 20px !important; padding-left: 0px !important; padding-right: 0px !important;">
+      <h5 class="content-title">Nhận xét về sản phẩm</h5>
+      <ng-template #commentTemplateRef let-comment="comment">
+        <nz-comment [nzAuthor]="nzAuthor" [nzDatetime]="nzDatetime">
+          <ng-template #nzAuthor>
+            {{comment.strNguoiDanhGia}}
+          </ng-template>
+          <ng-template #nzDatetime>
+            {{comment.ngayDanhGia| momentFromNow}}
+          </ng-template>
+          <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.avatar"></nz-avatar>
+          <nz-comment-content>
+            <p>{{ comment.nhanXet }}</p>
+            <nz-rate *ngIf="!comment.parentId" nzDisabled [ngModel]="comment.diem"></nz-rate>
+          </nz-comment-content>
+          <ng-container *ngIf="comment.listBinhLuan && comment.listBinhLuan.length">
+            <ng-template ngFor let-child [ngForOf]="comment.listBinhLuan">
+              <ng-template
+                [ngTemplateOutlet]="commentTemplateRef"
+                [ngTemplateOutletContext]="{ comment: child }"
+              ></ng-template>
+            </ng-template>
+          </ng-container>
+        </nz-comment>
+      </ng-template> -->
+
+      <!--<ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: data }"></ng-template>-->
+
+<!-- 
+      <ng-template ngFor let-child [ngForOf]="dataDanhGia">
+        <ng-template
+          [ngTemplateOutlet]="commentTemplateRef"
+          [ngTemplateOutletContext]="{ comment: child }"
+        ></ng-template>
+      </ng-template>
+
+
+    </div> -->
+
+  </div>
+
+</div>
+

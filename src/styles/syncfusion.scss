@@ -1,0 +1,17 @@
+
+.e-emptyrow {
+  .e-lastrowcell {
+    font-size: 13px;
+    color: #dc0e0e;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+}
+
+.e-grid .e-gridheader .e-sortfilter .e-headercelldiv, .e-grid .e-gridheader .e-stackedheadercelldiv, .e-grid .e-gridheader .e-headercell .e-headercelldiv.e-headerchkcelldiv {
+  padding: 0 5px !important;
+}
+
+.e-rowcell {
+  padding: 3px 8px !important;
+}

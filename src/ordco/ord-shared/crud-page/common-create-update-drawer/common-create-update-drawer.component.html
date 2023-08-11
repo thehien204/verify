@@ -1,0 +1,25 @@
+<div class='common-create-update-drawer'>
+  <of [schemaModel]='entitySchema'></of>
+  <div>
+    <nz-divider></nz-divider>
+    <div class="text-center">
+      <button type='button' class="me-3" nz-button nzType='default' (click)='close()' [nzLoading]='btnBusy'>
+        <i nz-icon nzType='close' nzTheme='outline'></i>Đóng
+      </button>
+      <button *ngIf="!isReadOnly" type='submit' nz-button nzType='primary' (click)='save()' [nzLoading]='btnBusy'>
+        <i nz-icon nzType='save' nzTheme='outline'></i>{{editView ? 'Sửa' : 'Thêm mới'}}
+      </button>
+      <button *ngIf="isReadOnly" type="button" nz-button nzType='primary' (click)='openEdit()' [nzLoading]='btnBusy'>
+        <i nz-icon nzType='edit' nzTheme='outline'></i>{{'Sửa thông tin'}}
+      </button>
+    </div>
+  </div>
+</div>
+<!--<div class='btn-group'>-->
+<!--  <button type='button' nz-button nzType='default' (click)='close()' [nzLoading]='btnBusy'>-->
+<!--    <i nz-icon nzType='close' nzTheme='outline'></i>Đóng-->
+<!--  </button>-->
+<!--  <button type='submit' nz-button nzType='primary' (click)='save()' [nzLoading]='btnBusy'>-->
+<!--    <i nz-icon nzType='save' nzTheme='outline'></i>{{editView ? 'Sửa' : 'Thêm mới'}}-->
+<!--  </button>-->
+<!--</div>-->

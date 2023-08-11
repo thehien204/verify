@@ -1,0 +1,25 @@
+:host {
+  height: 100%;
+  margin: 0;
+
+  .flex-root {
+    height: 100%;
+  }
+}
+
+.page-loaded {
+  app-layout {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+  }
+}
+
+#layout-not-aside {
+  #kt_header {
+    left: 0;
+  }
+
+  #kt_wrapper {
+    padding-left: 0;
+  }
+}

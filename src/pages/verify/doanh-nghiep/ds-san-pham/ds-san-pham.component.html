@@ -1,0 +1,107 @@
+<app-search-page-shared layout="horizontal" titlePage='Danh sách sản phẩm'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'sản phẩm'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+    <button nz-button nzType='primary' (click)='openCreateOrUpdate()'>
+      <i nz-icon nzType='plus' nzTheme='outline'></i> Thêm mới
+    </button>
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema"
+              rowHeight="120"
+              [dataSourceFunc]="this.proxyServices.getList">
+      <ord-column field="ma" width="160">
+        <ng-template ord-header>
+          <app-common-header-sort
+            headerText='Mã (GTIN)'
+            field='ma'
+            [searchSchema]='searchSchema'>
+          </app-common-header-sort>
+        </ng-template>
+      </ord-column>
+      <!--      <ord-column width="230" textAlign="Center">-->
+      <!--        <ng-template ord-content let-record>-->
+      <!--          <ejs-barcodegenerator style="display: block;"-->
+      <!--                                width="200px" height="80px" mode="SVG"-->
+      <!--                                type="Ean13"-->
+      <!--                                [value]="record.ma"></ejs-barcodegenerator>-->
+      <!--        </ng-template>-->
+      <!--      </ord-column>-->
+      <ord-column width="160" textAlign="Center">
+        <ng-template ord-content let-record>
+          <img alt="" src="{{record.baseImageUrl}}" height="90">
+        </ng-template>
+      </ord-column>
+      <ord-column field='ten' headerText='Thông tin sản phẩm'>
+        <ng-template ord-content let-record>
+          <div title="Click để xem chi tiết" role="button" (click)="openCreateOrUpdate(record,true)">
+            <div>
+              <img src="./assets/images/icon/products.png" class="me-3 h-18"/>
+              <span class="text-primary product-name">{{record.ten}}</span>
+            </div>
+            <div>
+              <img src="./assets/images/icon/office-building.png" class="me-3 h-18"/>
+              <app-doanh-nghiep-cell [doanhNghiepId]="record.doanhNghiepId"></app-doanh-nghiep-cell>
+            </div>
+          </div>
+
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Nhóm sản phẩm' width="200">
+        <ng-template ord-content let-record>
+          {{record.nhomSanPhamId | nhomSanPhamDisplayText | async}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Trạng thái' width="120" textAlign="Center">
+        <ng-template ord-content let-record>
+
+          <ng-container *ngIf="record.isYeuCauVerify && !record.isVerify;else isNoYC">
+<!--            public bool? IsYeuCauVerify { get; set; }-->
+<!--            public DateTime? NgayGuiYeuCauVerify { get; set; }-->
+            <nz-tag nzColor="processing">Yêu cầu xác thực</nz-tag> <br/>
+            {{record.ngayGuiYeuCauVerify | date:'dd/MM/yyyy HH:mm'}}
+          </ng-container>
+          <ng-template #isNoYC>
+            <ng-container *ngIf="record.isVerify">
+              <i nz-icon class="text-success fs-3" nzType="check-circle" nzTheme="outline"></i>
+            </ng-container>
+          </ng-template>
+          <ng-container *ngIf="!record.isVerify">
+            <i nz-icon class="text-danger fs-3" *ngIf="!record.isVerify" nzType="close-circle" nzTheme="outline"></i>
+          </ng-container>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thao tác' width='130' textAlign="Center">
+        <ng-template ord-content let-record>
+          <app-common-grid-actions [isGroupAction]="false">
+            <app-common-grid-action-item nzIcon="check" actionName="Xác thực sản phẩm" *ngIf="!record.isVerify"
+                                         (onclickEvent)='showConfirmVerify(record)'></app-common-grid-action-item>
+            <app-common-grid-action-item nzIcon="close" actionName="Bỏ xác thực sản phẩm" *ngIf="record.isVerify"
+                                         (onclickEvent)='showConfirmUnVerify(record)'></app-common-grid-action-item>
+
+            <app-common-grid-action-item nzIcon="qrcode"
+                                         (onclickEvent)='openQrCodeView(record)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item nzIcon="barcode"
+                                         (onclickEvent)='openBarCodeView(record)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionType='edit' actionName="Kê khai thông tin sản phẩm"
+                                         (onclickEvent)='openCreateOrUpdate(record)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item nzIcon="cloud-upload" actionName="Giấy chứng nhận sản phẩm"
+                                         (onclickEvent)='openGiayChungNhanModal(record)'></app-common-grid-action-item>
+
+            <!--            <app-common-grid-action-item actionType='delete'-->
+            <!--                                         (onclickEvent)='delete(record)'></app-common-grid-action-item>-->
+          </app-common-grid-actions>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>

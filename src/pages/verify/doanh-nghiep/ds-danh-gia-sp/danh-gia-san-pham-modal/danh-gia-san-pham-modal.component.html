@@ -1,0 +1,60 @@
+<ng-template #commentTemplateRef let-comment="comment">
+  <nz-comment [nzAuthor]="nzAuthor" [nzDatetime]="nzDatetime">
+    <ng-template #nzAuthor>
+      {{comment.strNguoiDanhGia}}
+    </ng-template>
+    <ng-template #nzDatetime>
+      {{comment.ngayDanhGia| momentFromNow}}
+    </ng-template>
+    <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.avatar"></nz-avatar>
+    <nz-comment-content>
+      <p>{{ comment.nhanXet }}</p>
+      <nz-rate *ngIf="!comment.parentId" nzDisabled [ngModel]="comment.diem"></nz-rate>
+    </nz-comment-content>
+    <nz-comment-action>
+      <span (click)="comment.isShowReppy = true">Trả lời</span>
+    </nz-comment-action>
+    <nz-comment-action>
+      <span (click)="xoaDanhGia(comment)">Xóa đánh giá</span>
+    </nz-comment-action>
+    <nz-comment *ngIf="comment.isShowReppy">
+      <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.avatar"></nz-avatar>
+      <nz-comment-content>
+        <nz-form-item>
+          <textarea [(ngModel)]="comment.inputReply" nz-input rows="4"></textarea>
+        </nz-form-item>
+        <nz-form-item nzJustify="end" style="margin-top: 5px">
+          <button style="margin-right: 5px" nz-button nzType="default" [nzLoading]="comment.loadingReply"
+                  (click)="comment.isShowReppy = false">
+            Đóng
+          </button>
+          <button nz-button nzType="primary" [nzLoading]="comment.loadingReply" [disabled]="!comment.inputReply"
+                  (click)="handleSubmit(comment)">
+            Gửi
+          </button>
+        </nz-form-item>
+      </nz-comment-content>
+    </nz-comment>
+
+
+    <ng-container *ngIf="comment.listBinhLuan && comment.listBinhLuan.length">
+      <ng-template ngFor let-child [ngForOf]="comment.listBinhLuan">
+        <ng-template
+          [ngTemplateOutlet]="commentTemplateRef"
+          [ngTemplateOutletContext]="{ comment: child }"
+        ></ng-template>
+      </ng-template>
+    </ng-container>
+  </nz-comment>
+</ng-template>
+
+<!--<ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: data }"></ng-template>-->
+
+
+<ng-template ngFor let-child [ngForOf]="data">
+  <ng-template
+    [ngTemplateOutlet]="commentTemplateRef"
+    [ngTemplateOutletContext]="{ comment: child }"
+  ></ng-template>
+</ng-template>
+

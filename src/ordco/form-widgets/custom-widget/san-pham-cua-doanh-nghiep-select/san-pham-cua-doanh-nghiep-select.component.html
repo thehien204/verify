@@ -1,0 +1,13 @@
+<form [formGroup]="schemaModel.form">
+  <nz-select [formControlName]="field.dataField"
+             nzAllowClear
+             nzShowSearch
+             nzServerSearch
+             (nzOnSearch)="search$.next($event)"
+             nzPlaceHolder="Nhập mã gtin/ tên sản phẩm để tìm kiếm">
+    <nz-option *ngFor="let record of optionItems"
+               [nzLabel]="record.ma + ' - '+ record.ten"
+               [nzValue]="'' + record.id">
+    </nz-option>
+  </nz-select>
+</form>

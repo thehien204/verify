@@ -1,0 +1,53 @@
+<app-search-page-shared layout="horizontal" titlePage='Lịch sử truy cập'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'lượt truy cập'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema"
+              [dataSourceFunc]="this.proxyServices.getList">
+      <ord-column headerText='Ngày thực hiện' width="160">
+        <ng-template ord-content let-record>
+          {{record?.executionTime | date :'dd/MM/yyyy - HH:mm:ss'}}
+        </ng-template>
+      </ord-column>
+      <ord-column field='url' headerText='Url' minWidth="200"></ord-column>
+      <ord-column field='userName' headerText='Tên đăng nhập' width="160"></ord-column>
+      <ord-column textAlign="Right" headerText='Thời gian' width="120">
+        <ng-template ord-content let-record>
+          {{record?.executionDuration}} (ms)
+        </ng-template>
+      </ord-column>
+      <ord-column field='httpMethod' headerText='Method' width="90"></ord-column>
+      <ord-column field='clientIpAddress' headerText='Client ip' width="90"></ord-column>
+      <ord-column field='httpStatusCode' headerText='Status Code' width="120"></ord-column>
+      <ord-column headerText='Exceptions' width="120" textAlign="Center">
+        <ng-template ord-content let-record>
+          <button nz-button nzType="default"
+                  (click)="isVisible=true;auditDetail=record"
+                  *ngIf="record.exceptions">
+            Chi tiết
+          </button>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>
+<nz-modal [(nzVisible)]="isVisible"
+          nzWidth="90vw"
+          (nzOnCancel)="isVisible=false"
+          nzTitle="Chi tiết lỗi">
+  <ng-container *nzModalContent>
+    <span>{{auditDetail.exceptions}}</span>
+  </ng-container>
+  <ng-container *nzModalFooter>
+
+  </ng-container>
+</nz-modal>

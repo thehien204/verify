@@ -1,0 +1,16 @@
+<nz-select
+    class="pt-select"
+    [nzLoading]="loading"
+    [nzAllowClear]="allowClear"
+    [nzPlaceHolder]="placeHolder"
+    [nzMode]="selectMode"
+    [formControl]="control"
+    [compareWith]="compareFn"
+    (nzFocus)="onFocus($event)"
+    nzShowSearch
+    nzServerSearch
+    [nzNotFoundContent]="refNotFound"
+    (nzOnSearch)="search($event)"
+>
+    <nz-option *ngFor="let option of options" [nzLabel]="option.displayText" [nzValue]="option"></nz-option>
+</nz-select>

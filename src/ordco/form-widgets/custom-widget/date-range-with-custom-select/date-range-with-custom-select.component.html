@@ -1,0 +1,132 @@
+<div nz-row>
+  <div nz-col nzFlex='1 1 100px' class='tu-ngay-den-ngay-custom-select-box'>
+    <of [schemaModel]='dateRangeSchema' [submitted]='schemaModel.submitted'></of>
+  </div>
+  <div nz-col nzFlex='0 1 30px'>
+    <button class='btn-custom-select-date-range' nz-button nzType='default' title='Tùy chọn' type='button'
+            nz-dropdown nzTrigger='click' [nzDropdownMenu]='menu' nzClickHide='false' [(nzVisible)]='visibleCustomDDL'>
+      <i nz-icon nzType='setting' nzTheme='outline'></i>
+    </button>
+  </div>
+</div>
+
+<nz-dropdown-menu #menu='nzDropdownMenu'>
+  <ul nz-menu class='ul-menu-select-date-range' *ngIf='visibleCustomDDL'>
+    <li nz-menu-item>
+      <div nz-row>
+        <div nz-col nzSpan='8'>
+          <a nz-button nzType='link' (click)='apDungCustom("hom-nay")'>Hôm nay</a>
+        </div>
+        <div nz-col nzSpan='8'>
+          <a nz-button nzType='link' (click)='apDungCustom("thang-nay")'>Tháng này</a>
+        </div>
+        <div nz-col nzSpan='8'>
+          <a nz-button nzType='link' (click)='apDungCustom("nam-nay")'>Năm nay</a>
+        </div>
+        <div nz-col nzSpan='8'>
+          <a nz-button nzType='link' (click)='apDungCustom("tuan-nay")'>Tuần này</a>
+        </div>
+        <div nz-col nzSpan='8'>
+          <a nz-button nzType='link' (click)='apDungCustom("thang-truoc")'>Tháng trước</a>
+        </div>
+        <div nz-col nzSpan='8'>
+          <a nz-button nzType='link' (click)='apDungCustom("nam-truoc")'>Năm trước</a>
+        </div>
+      </div>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item>
+      <div nz-row>
+        <div nz-col nzSpan='24' class='mb-2'>
+          <nz-radio-group [(ngModel)]='theoKieu'>
+            <label nz-radio nzValue='theo-thang'>Tháng</label>
+            <label nz-radio nzValue='theo-quy'>Quý</label>
+            <label nz-radio nzValue='theo-nam'>Năm</label>
+          </nz-radio-group>
+        </div>
+        <div nz-col nzSpan='24' class='mb-2'>
+          <nz-input-group nzCompact style='width: 100%'>
+            <input nz-input value='Từ' disabled style='width: 20%'>
+            <nz-select [(ngModel)]='thangTu' nzAllowClear nzShowSearch nzPlaceHolder='Chọn tháng'
+                       *ngIf='theoKieu==="theo-thang"'
+                       style='width: 42%'>
+              <ng-container *ngFor='let opt of thangOptions'>
+                <nz-option *ngIf='!funcDisableThangTu(opt.value)' [nzLabel]='opt.displayText'
+                           [nzValue]='opt.value'></nz-option>
+              </ng-container>
+
+            </nz-select>
+            <nz-select [(ngModel)]='quyTu' nzAllowClear nzPlaceHolder='Chọn quý' *ngIf='theoKieu==="theo-quy"'
+                       style='width: 42%'>
+              <ng-container *ngFor='let opt of quyOptions'>
+                <nz-option *ngIf='!funcDisableQuyTu(opt.value)' [nzLabel]='opt.displayText'
+                           [nzValue]='opt.value'></nz-option>
+              </ng-container>
+
+            </nz-select>
+            <nz-select [(ngModel)]='namTu' nzAllowClear nzShowSearch nzPlaceHolder='Chọn năm' style='width: 38%'>
+              <ng-container *ngFor='let opt of namOptions'>
+                <nz-option [nzLabel]='opt.displayText' [nzValue]='opt.value'
+                           *ngIf='!funcDisableNamTu(opt.value)'></nz-option>
+              </ng-container>
+            </nz-select>
+          </nz-input-group>
+        </div>
+        <div nz-col nzSpan='24' class='mb-2'>
+          <nz-input-group nzCompact style='width: 100%'>
+            <input nz-input value='Đến' disabled style='width: 20%'>
+            <nz-select [(ngModel)]='thangDen' nzAllowClear nzShowSearch nzPlaceHolder='Chọn tháng'
+                       *ngIf='theoKieu==="theo-thang"'
+                       style='width: 42%'>
+              <ng-container *ngFor='let opt of thangOptions'>
+                <nz-option *ngIf='!funcDisableThangDen(opt.value)' [nzLabel]='opt.displayText'
+                           [nzValue]='opt.value'></nz-option>
+              </ng-container>
+
+            </nz-select>
+            <nz-select [(ngModel)]='quyDen' nzAllowClear nzPlaceHolder='Chọn quý' *ngIf='theoKieu==="theo-quy"'
+                       style='width: 42%'>
+              <ng-container *ngFor='let opt of quyOptions'>
+                <nz-option *ngIf='!funcDisableQuyDen(opt.value)' [nzLabel]='opt.displayText'
+                           [nzValue]='opt.value'></nz-option>
+              </ng-container>
+
+            </nz-select>
+            <nz-select [(ngModel)]='namDen' nzAllowClear nzShowSearch nzPlaceHolder='Chọn năm' style='width: 38%'>
+              <ng-container *ngFor='let opt of namOptions'>
+                <nz-option [nzLabel]='opt.displayText' [nzValue]='opt.value'
+                           *ngIf='!funcDisableNamDen(opt.value)'></nz-option>
+              </ng-container>
+            </nz-select>
+          </nz-input-group>
+        </div>
+        <div nz-col nzSpan='24' class='text-right'>
+          <button class='ml-1' nz-button nzType='primary'
+                  (click)='apDungKyThoiGian()'>
+            Áp dụng
+          </button>
+        </div>
+      </div>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item>
+      <div nz-row>
+        <div nz-col nzSpan='16'>
+          <nz-input-group nzCompact style='width: 100%'>
+            <nz-input-number [(ngModel)]='iTruocDay' [nzMin]='1' [nzStep]='1'></nz-input-number>
+            <nz-select [(ngModel)]='khoangTruocDay'>
+              <nz-option *ngFor='let opt of options' [nzLabel]='opt.displayText' [nzValue]='opt.value'></nz-option>
+            </nz-select>
+
+          </nz-input-group>
+        </div>
+        <div nz-col nzSpan='8' class='text-right'>
+          <button nz-button nzType='primary' (click)='apDungKhoangTruocDay()'>
+            Áp dụng
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+</nz-dropdown-menu>

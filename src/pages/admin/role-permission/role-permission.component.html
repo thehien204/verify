@@ -1,0 +1,48 @@
+<div class="card">
+  <div class="card-body pt-0 pb-0">
+    <div class="d-flex overflow-auto h-55px">
+      <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap">
+
+        <li class="nav-item" *ngFor="let group of groups;let idx= index" (click)="groupSelected=group">
+          <a class="nav-link text-active-primary me-6"
+             [class.active]="groupSelected.name==group.name">
+            {{("PermissionGroup." + group.displayName) | translate}}
+            <span
+              class="badge bg-primary  rounded-pill ms-5">{{countGrantedInGroup[idx]}}
+              / {{group?.permissions?.length}}</span>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>
+</div>
+<div class="card mt-5">
+  <div class="card-header">
+    <div class="card-title" *ngIf="groupSelected">
+      <h3>Danh sách quyền thuộc nhóm:  {{("PermissionGroup." + groupSelected.displayName) | translate}}</h3>
+    </div>
+  </div>
+  <div class="card-body pt-9 pb-0">
+    <ng-container *ngFor="let group of groups;let idx= index">
+      <app-permission-tree #vcTreePermission [flatPermissions]="group.permissions"
+                           [grantedPermissions]="grantedPermissions"
+                           [hidden]="group.name!== groupSelected.name"
+                           (countGranted)="countGrantedInGroup[idx]=$event"
+      ></app-permission-tree>
+    </ng-container>
+  </div>
+  <div class="card-footer pt-5 pb-3">
+    <app-save-button-group [btnBusy]="btnBusy"
+                           (onSave)="save()"
+                           (onClose)="close()"
+    ></app-save-button-group>
+  </div>
+</div>
+
+<style>
+  .grant-permission-role .ant-drawer-body {
+    background-color: #f5f8fa;
+  }
+</style>

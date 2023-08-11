@@ -1,0 +1,64 @@
+<app-search-page-shared layout="vertical" titlePage='Danh sách vai trò'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]='searchSchema'></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'vai trò'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+    <button nz-button nzType='primary' (click)='openCreateOrUpdate()'>
+      <i nz-icon nzType='plus' nzTheme='outline'></i> Thêm mới
+    </button>
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema" [dataSourceFunc]="getList">
+      <ord-column field="name" width="200">
+        <ng-template ord-header>
+          <app-common-header-sort
+            headerText='Tên vai trò'
+            field='name'
+            [searchSchema]='searchSchema'></app-common-header-sort>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Mô tả'>
+        <ng-template ord-content let-data>
+          {{data.description}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Mặc định' width='90' textAlign='Center'>
+        <ng-template ord-content let-data>
+          <app-common-cell-is-active [isActive]="data.isDefault"></app-common-cell-is-active>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Công khai' width='90' textAlign='Center'>
+        <ng-template ord-content let-data>
+          <app-common-cell-is-active [isActive]="data.isPublic"></app-common-cell-is-active>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Tĩnh' width='90' textAlign='Center'>
+        <ng-template ord-content let-data>
+          <app-common-cell-is-active [isActive]="data.isStatic"></app-common-cell-is-active>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thao tác' width='120' textAlign="Center">
+        <ng-template ord-content let-data>
+          <app-common-grid-actions>
+            <app-common-grid-action-item actionType='edit'
+                                         (onclickEvent)='openCreateOrUpdate(data)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionType='Phân quyền'
+                                         nzIcon="setting"
+                                         (onclickEvent)='grantPermission(data)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionType='delete'
+                                         (onclickEvent)='delete(data)'></app-common-grid-action-item>
+          </app-common-grid-actions>
+
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>
+

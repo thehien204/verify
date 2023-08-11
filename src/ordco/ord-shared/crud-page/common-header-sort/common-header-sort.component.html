@@ -1,0 +1,12 @@
+<nz-spin [nzSpinning]="loading">
+  <div class="sort-column" (click)="onClickSortFn()">
+    <span class="e-headertext">{{headerText}}</span>
+    <ng-content></ng-content>
+    <span class="icon-sort"
+          nz-tooltip='Sắp xếp theo: "{{headerText}}" {{orderBy===1 ? "tăng dần" : orderBy===2 ?"giảm dần":""}}'>
+      <i class="fas fa-sort-amount-up-alt text-primary" *ngIf='orderBy===1'></i>
+      <i class="fas fa-sort-amount-down text-primary" *ngIf='orderBy===2'></i>
+      <i class="fas fa-sort fs-15px" *ngIf='orderBy===0'></i>
+    </span>
+  </div>
+</nz-spin>

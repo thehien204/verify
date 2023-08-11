@@ -1,0 +1,27 @@
+<div class="d-flex">
+  <nz-upload
+    *ngIf="alowUpload"
+    #ref
+    [nzMultiple]="selectedMulti"
+    nzListType="text"
+    [nzCustomRequest]="customReq"
+    [nzDownload]="handleDownload"
+    [(nzFileList)]="fileList"
+    [nzShowUploadList]="false"
+    [nzBeforeUpload]="beforeUpload "
+    (nzFileListChange)="onFileListChange($event)"
+    (nzChange)="onChangeImg($event)">
+    <button nz-button nzType="default">
+      <i nz-icon nzType="upload"></i>
+      {{uploadText}}
+    </button>
+
+  </nz-upload>
+
+  <button style="margin-left: 5px" [disabled]="fileList.length===0" nz-button nzType="default" class="margin-left-5"
+          *ngIf="singleOutput"
+          (click)="onClickDownLoadSingleFile()">
+    <span nz-icon nzType="cloud-download" nzTheme="outline"></span>
+    {{downloadText}}
+  </button>
+</div>

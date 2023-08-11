@@ -1,0 +1,37 @@
+:host ::ng-deep {
+  nz-table {
+    thead {
+      nz-table-selection {
+        .ant-checkbox.ant-checkbox-checked {
+          .ant-checkbox-inner {
+            border-color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .table-white {
+    .ant-table-thead > tr > th {
+      color: #656565;
+      background-color: white;
+    }
+  }
+}
+
+.is-selected {
+  color: #46AA11;
+  background-color: #e6fbff;
+
+  .ora-col-select {
+    background-color: #e6fbff;
+  }
+  .ora-col-select:hover {
+    background-color: #f5f7fa;
+  }
+}
+
+.div-pagination-simple {
+  text-align: right;
+  margin-top: 10px;
+}

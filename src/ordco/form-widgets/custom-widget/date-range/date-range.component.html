@@ -1,0 +1,22 @@
+<form [formGroup]='formTuNgayDenNgay'>
+  <div nz-row class='tu-ngay-den-ngay-control'>
+    <div nz-col [nzSpan]='12' class='tu-ngay-part' #refFromDate>
+      <nz-input-group [nzAddOnBefore]='addOnBeforeTemplate'>
+        <nz-date-picker [nzDisabledDate]='disabledTuNgay' [nzFormat]='format' style='width: 100%'
+                        formControlName='tuNgay' nzPlaceHolder='Ngày/Tháng/Năm'></nz-date-picker>
+      </nz-input-group>
+      <ng-template #addOnBeforeTemplate>
+        <span class='text-range'>Từ </span>
+      </ng-template>
+    </div>
+    <div nz-col [nzSpan]='12' class='den-ngay-part' #refToDate>
+      <nz-input-group [nzAddOnBefore]='addOnBeforeTemplate1'>
+        <nz-date-picker [nzDisabledDate]='disabledDenNgay' [nzFormat]='format' style='width: 100%'
+                        formControlName='denNgay' nzPlaceHolder='Ngày/Tháng/Năm'></nz-date-picker>
+      </nz-input-group>
+      <ng-template #addOnBeforeTemplate1>
+        <span class='text-range'>đến</span>
+      </ng-template>
+    </div>
+  </div>
+</form>

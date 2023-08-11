@@ -1,0 +1,102 @@
+<h3 class="mt-3">Danh sách loại dịch vụ</h3>
+<ng-container *ngIf="ready">
+  <form [formGroup]="rootFormGroup">
+    <ng-container formArrayName="listOfChiTiet">
+      <nz-table [nzShowPagination]="false" class="list-table-chi-tiet-goi"
+                [nzBordered]="true"
+                [nzData]="getFormArray().controls">
+        <thead>
+        <tr>
+          <th class="text-center" nzWidth="60px"></th>
+          <th class="text-center" nzWidth="60px">#</th>
+          <th nzWidth="230px">Loại dịch vụ</th>
+          <th>Bảng giá áp dụng</th>
+          <th nzWidth="160px">Số lượng</th>
+          <th nzWidth="160px" nzAlign="right">Tổng tiền</th>
+          <!--          <th nzWidth="160px">Thời gian tính giá</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let chiTietControl of getFormArray().controls; index as i">
+          <ng-container [formGroupName]="i">
+            <td class="text-center">
+              <label nz-checkbox formControlName="checked"></label>
+            </td>
+            <td class="text-center">{{i + 1}}</td>
+            <td>{{chiTietControl.value.loaiDichVuDto.ten}}</td>
+            <td>
+              <nz-select formControlName="bangGiaDichVuId"
+                         nzAllowClear
+                         nzPlaceHolder="Chọn bảng giá"
+                         [nzCustomTemplate]="selectedBangGiaTemplate"
+                         *ngIf="chiTietControl.value.checked">
+                <nz-option *ngFor="let bangGiaItem of chiTietControl.value.listBangGiaDto"
+                           nzCustomContent
+                           nzLabel="{{bangGiaItem.ten }} - {{bangGiaItem.donGia | currency:'VND'}} / {{bangGiaItem.donViTinh | donViTinhGiaDisplayText |async}}"
+                           [nzValue]="bangGiaItem.id">
+                  <span class="text-primary fw-bold me-2">  {{bangGiaItem.ten}}</span>
+                  ({{bangGiaItem.donGia | currency:'VND'}})
+                  áp dụng
+                  <span *ngIf="bangGiaItem.ngayHieuLuc">
+                    từ ngày {{bangGiaItem.ngayHieuLuc | date :'dd/MM/yyyy'}}
+                  </span>
+                  <span *ngIf="bangGiaItem.ngayHetHieuLuc">
+                    đến ngày {{bangGiaItem.ngayHetHieuLuc | date :'dd/MM/yyyy'}}
+                  </span>
+                </nz-option>
+              </nz-select>
+              <ng-template #selectedBangGiaTemplate let-selected>
+                <span *ngIf="getGoiDichVuItem(selected.nzValue,chiTietControl.value.listBangGiaDto) as bangGiaItem">
+                   <span class="text-primary fw-bold me-2">  {{bangGiaItem.ten}}</span>
+                                  ({{bangGiaItem.donGia | currency:'VND'}})
+                                  áp dụng
+                                  <span *ngIf="bangGiaItem.ngayHieuLuc">
+                                    từ ngày {{bangGiaItem.ngayHieuLuc | date :'dd/MM/yyyy'}}
+                                  </span>
+                                  <span *ngIf="bangGiaItem.ngayHetHieuLuc">
+                                    đến ngày {{bangGiaItem.ngayHetHieuLuc | date :'dd/MM/yyyy'}}
+                                  </span>
+                </span>
+              </ng-template>
+              <of-valid-error controlName="bangGiaDichVuId" [form]="getFormArray().controls[i]"></of-valid-error>
+            </td>
+            <td>
+              <ng-container *ngIf="chiTietControl.value.checked && chiTietControl.value.bangGiaDichVuId > 0">
+                <nz-input-number formControlName="soLuong" style="width: 100%"
+                                 [nzMin]="0" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+                <of-valid-error controlName="soLuong" [form]="getFormArray().controls[i]"></of-valid-error>
+              </ng-container>
+
+            </td>
+            <td nzAlign="right">
+              {{getTongTienItem(i) | currency:'VND'}}
+            </td>
+            <!--            <td>-->
+            <!--              <ng-container *ngIf="chiTietControl.value.checked && chiTietControl.value.bangGiaDichVuId > 0">-->
+            <!--                <nz-input-number formControlName="soLuongThoiGian" style="width: 100%"-->
+            <!--                                 [nzMin]="0" [nzMax]="1000" [nzStep]="1"></nz-input-number>-->
+            <!--                <of-valid-error controlName="soLuongThoiGian" [form]="getFormArray().controls[i]"></of-valid-error>-->
+            <!--              </ng-container>-->
+
+            <!--            </td>-->
+          </ng-container>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="4">
+            <span class="text-primary fw-bolder">Tổng tiền</span>
+          </td>
+          <td class="text-right">
+            <span class="text-primary fw-bolder">
+               {{getTongTien()| currency:'VND'}}
+            </span>
+
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </ng-container>
+
+  </form>
+
+</ng-container>

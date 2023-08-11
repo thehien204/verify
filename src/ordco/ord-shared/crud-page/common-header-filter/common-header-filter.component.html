@@ -1,0 +1,36 @@
+<button nz-button nzType="dashed" nzShape="circle" class="ord-filter"
+        nz-dropdown [nzDropdownMenu]="menu"
+        [nzTrigger]="dropDownTrigger" nzClickHide="false" nzPlacement="bottomRight"
+        [nzVisible]="visible"
+        (nzVisibleChange)="onChangeVisibleDropDownFilter($event)"
+>
+  <i class="fas fa-filter" [class.text-primary]="filtered$ | async"></i>
+</button>
+<nz-dropdown-menu #menu="nzDropdownMenu" [hidden]="!visible">
+  <ul nz-menu nzSelectable>
+    <ng-container *ngIf="filtered$ | async">
+      <li nz-menu-item (click)="clear()" class="text-danger">
+        <i nz-icon nzType="delete" nzTheme="outline" class="me-3"></i>{{'clearFilterOrdTable'|translate}}
+      </li>
+      <li nz-menu-divider></li>
+    </ng-container>
+    <li nz-menu-item *ngIf="filterSchema">
+      <div class="ord-table-box-filter" [style.width.px]="width || 300">
+        <of class="ord-table-of-filter" [schemaModel]="filterSchema"></of>
+      </div>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item class="text-end d-block">
+      <button nz-button nzSize="small" class="close-filter" (click)="close()">
+        <i nz-icon nzType="close"></i>
+        {{'closeFilterOrdTable' | translate}}
+      </button>
+      <button nz-button nzType="primary" class="apply-filter ms-3" nzSize="small"
+              (click)="applyFilterColumn()">
+        <i nz-icon nzType="search"></i>
+        {{'applyFilterOrdTable' | translate}}
+      </button>
+    </li>
+  </ul>
+
+</nz-dropdown-menu>

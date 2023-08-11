@@ -1,0 +1,61 @@
+<form nz-form [formGroup]="rfFormGroup" nzLayout="vertical">
+  <nz-form-item>
+    <nz-form-label nzRequired>Tên thông báo</nz-form-label>
+    <nz-form-control nzErrorTip="{{'nullOrWhiteSpace'|translate}}">
+      <ora-select dirNotificationName formControlName="notificationName"></ora-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired>Loại đối tượng nhận thông báo</nz-form-label>
+    <nz-form-control nzErrorTip="{{'nullOrWhiteSpace'|translate}}">
+      <ora-select dirLoaiDoiTuongNhanTb formControlName="loaiDoiTuongNhanTb"></ora-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="rfFormGroup.get('loaiDoiTuongNhanTb').value===enumLoaiDtNhanTb.ListLoaiTaiKhoan">
+    <nz-form-label nzRequired>Đối tượng nhân thông báo</nz-form-label>
+    <nz-form-control nzErrorTip="{{'nullOrWhiteSpace'|translate}}">
+      <ora-select-multi dirLoaiTaiKhoan formControlName="sendToListLoaiTaiKhoan"></ora-select-multi>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="rfFormGroup.get('loaiDoiTuongNhanTb').value == enumLoaiDtNhanTb.ListUser">
+    <nz-form-label nzRequired>Người dùng</nz-form-label>
+    <nz-form-control nzErrorTip="{{'nullOrWhiteSpace'|translate}}">
+      <ora-select-multi dirNguoiDung formControlName="listUserId"></ora-select-multi>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="rfFormGroup.get('loaiDoiTuongNhanTb').value == enumLoaiDtNhanTb.ListNhomDoanhNghiep">
+    <nz-form-label nzRequired>Nhóm doanh nghiệp</nz-form-label>
+    <nz-form-control nzErrorTip="{{'nullOrWhiteSpace'|translate}}">
+      <ora-select-multi dirNhomDoanhNghiep formControlName="listNhomDoanhNghiepId"></ora-select-multi>
+    </nz-form-control>
+  </nz-form-item>
+  <!--  <nz-form-item *ngIf="rfFormGroup.get('roleName')?.value=='-1'">-->
+  <!--    <nz-form-label nzRequired>Chọn User nhận thông báo từ danh sách dưới-->
+  <!--      đây-->
+  <!--    </nz-form-label>-->
+  <!--    <nz-form-control nzErrorTip="{{'nullOrWhiteSpace'|translate}}">-->
+  <!--    </nz-form-control>-->
+  <!--  </nz-form-item>-->
+
+  <nz-form-item>
+    <nz-form-label nzRequired>Tiêu đề thông báo</nz-form-label>
+    <nz-form-control nzErrorTip="{{'nullOrWhiteSpace'|translate}}">
+      <input nz-input formControlName="title"/>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired>Nội dung thông báo</nz-form-label>
+    <nz-form-control nzErrorTip="{{'nullOrWhiteSpace'|translate}}">
+      <textarea nz-input formControlName="message" rows="3"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<div *nzModalFooter>
+  <button type='button' nz-button nzType='default' (click)='close()' [nzLoading]='btnBusy'>
+    <i nz-icon nzType='close' nzTheme='outline'></i>Đóng
+  </button>
+  <button type='submit' nz-button nzType='primary' (click)='save()' [nzLoading]='btnBusy'>
+    <i nz-icon nzType='save' nzTheme='outline'></i>
+    Lưu và gửi
+  </button>
+</div>

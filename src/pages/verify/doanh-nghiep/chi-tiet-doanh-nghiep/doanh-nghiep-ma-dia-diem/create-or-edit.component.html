@@ -1,0 +1,57 @@
+<form nz-form [formGroup]="rfDataModal" nzLayout="horizontal">
+  <nz-form-item nzGutter="6">
+    <nz-form-label [nzFlex]="flexLabel" nzRequired>STT</nz-form-label>
+    <nz-form-control nzErrorTip="Giá trị bắt buộc!">
+      <nz-input-number formControlName="stt"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzFlex]="flexLabel" nzRequired>Loại mã</nz-form-label>
+    <nz-form-control nzErrorTip="Giá trị bắt buộc!">
+      <input nz-input formControlName="loaiMa">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzFlex]="flexLabel" nzRequired>Mã</nz-form-label>
+    <nz-form-control nzErrorTip="Giá trị bắt buộc!">
+      <input nz-input formControlName="ma">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzFlex]="flexLabel" nzRequired>Ngày cấp</nz-form-label>
+    <nz-form-control nzErrorTip="Giá trị bắt buộc!">
+      <ora-date-picker formControlName="ngayCap"></ora-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzFlex]="flexLabel" nzRequired>Ngày hết hạn</nz-form-label>
+    <nz-form-control>
+      <ora-date-picker formControlName="ngayHetHan"></ora-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzFlex]="flexLabel" nzRequired>Năm nợ phí</nz-form-label>
+    <nz-form-control>
+      <nz-input-number formControlName="namNoPhi"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzFlex]="flexLabel" nzRequired>Tổng nợ phí</nz-form-label>
+    <nz-form-control>
+      <nz-input-number formControlName="tongNoPhi"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzFlex]="flexLabel" nzRequired>Hoạt động</nz-form-label>
+    <nz-form-control>
+      <label nz-checkbox formControlName="isActive"></label>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<div *nzModalFooter>
+  <button type="button" nz-button nzType="default" (click)="close()">Đóng</button>
+  <button type="button" [nzLoading]="saving" nz-button nzType="primary" (click)="save()"><i nz-icon
+                                                                                            nzType="save"></i>Lưu
+  </button>
+</div>

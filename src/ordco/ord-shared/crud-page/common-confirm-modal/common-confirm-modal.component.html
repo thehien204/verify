@@ -1,0 +1,18 @@
+<div class='root-confirm'>
+  <div class='image'>
+    <img [ngStyle]='options.imgStyles' [src]='options.imageLink' alt='' />
+  </div>
+  <div class='title' [innerHTML]='transform(title)'>
+  </div>
+  <div class='message' [innerHTML]='transform(message)'>
+  </div>
+  <div class='action'>
+    <button class='btn-ok' nz-button [nzType]='options.okButtonType' (click)='okClick(true)'>
+      {{options.okText}}
+    </button>
+    <button class='btn-cancel' nz-button [nzType]='options.cancelButtonType' (click)='okClick(false)'>
+      {{options.cancelText}}
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,42 @@
+<app-search-page-shared layout="horizontal" titlePage='Quản lý thông báo'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'thông báo'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+    <button nz-button nzType="primary" (click)="setAllRead()">Thiết lập đọc toàn bộ</button>
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema"
+              [dataSourceFunc]="getList">
+      <ord-column headerText='Ngày nhận thông báo' width="150">
+        <ng-template ord-content let-record>
+          {{record.ngayGuiTin | date:'dd/MM/yyyy'}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Tên thông báo' width="350">
+        <ng-template ord-content let-record>
+          {{record.notificationName | tenThongBaoDisplayText|async}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Nội dung'>
+        <ng-template ord-content let-record>
+          <p>Tiêu đề: {{record.dataObject?.title}}</p>
+          <p>Nội dung: {{record.dataObject?.message}}</p>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Trạng thái' width="150">
+        <ng-template ord-content let-record>
+          {{record.trangThai === enumTrangThai.DA_DOC ? 'Đã đọc' : 'Chưa đọc'}}
+          <button *ngIf="record.trangThai!== enumTrangThai.DA_DOC" nz-button nzType="link" (click)="setAsRead(record)">
+            <i nz-icon nzType="eye"></i>
+          </button>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>

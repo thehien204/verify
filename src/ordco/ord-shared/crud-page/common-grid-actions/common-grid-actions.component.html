@@ -1,0 +1,44 @@
+<ng-container *ngIf="isGroupAction">
+  <ng-container *ngIf='actionItems?.length <=3'>
+    <ng-container *ngFor='let act of actionItems'>
+      <a class='common-action-btn' (click)='onClickActionItem(act)' title='{{act?.actionName}}'
+         nz-button nzType='{{act.nzTypeButton}}' nzDanger="{{act.isDanger}}">
+        <ng-container [ngTemplateOutlet]="tplIconAction" [ngTemplateOutletContext]="{act:act}"></ng-container>
+      </a>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf='actionItems?.length  > 3'>
+    <ng-container *ngFor='let act of getGroupAction(1)'>
+      <a class='common-action-btn' (click)='onClickActionItem(act)' title='{{act?.actionName}}'
+         nz-button nzType='{{act.nzTypeButton}}' nzDanger="{{act.isDanger}}">
+        <ng-container [ngTemplateOutlet]="tplIconAction" [ngTemplateOutletContext]="{act:act}"></ng-container>
+      </a>
+    </ng-container>
+    <!--Drop down-->
+    <a class='common-action-btn' nz-button nzType='link' nz-dropdown [nzDropdownMenu]='menu'>
+      <i nz-icon nzType='dash' nzTheme='outline'></i>
+    </a>
+    <nz-dropdown-menu #menu='nzDropdownMenu'>
+      <ul nz-menu nzSelectable>
+        <li nz-menu-item *ngFor='let act of getGroupAction(2)' (click)='onClickActionItem(act)'>
+          <ng-container [ngTemplateOutlet]="tplIconAction" [ngTemplateOutletContext]="{act:act}"></ng-container>
+          <span class="ms-2">{{act?.actionName}}</span>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="!isGroupAction">
+  <ng-container *ngFor='let act of actionItems'>
+    <a class='common-action-btn' (click)='onClickActionItem(act)' title='{{act?.actionName}}'
+       nz-button nzType='{{act.nzTypeButton}}' nzDanger="{{act.isDanger}}">
+      <ng-container [ngTemplateOutlet]="tplIconAction" [ngTemplateOutletContext]="{act:act}"></ng-container>
+    </a>
+  </ng-container>
+</ng-container>
+
+<ng-template #tplIconAction let-act='act'>
+  <i *ngIf='act?.nzIcon' nz-icon nzType='{{act?.nzIcon}}' nzTheme='outline' class='font-weight-bolder'></i>
+  <i *ngIf='act?.classIcon' [ngClass]='act.classIcon'></i>
+</ng-template>

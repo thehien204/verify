@@ -1,0 +1,37 @@
+<h4 class="mt-5 mb-3">DANH SÁCH GIẤY CHỨNG NHẬN</h4>
+<div class="clearfix">
+  <nz-upload
+    [nzBeforeUpload]="beforeUpload"
+    (nzChange)="handleChange($event)"
+    nzListType="picture-card"
+    [(nzFileList)]="fileList"
+    [nzShowButton]="fileList.length < 10"
+    [nzPreview]="handlePreview"
+  >
+    <div>
+      <i nz-icon nzType="plus"></i>
+      <div style="margin-top: 8px">Upload</div>
+    </div>
+  </nz-upload>
+
+  <nz-modal
+    [nzVisible]="previewVisible"
+    [nzContent]="modalContent"
+    [nzFooter]="null"
+    (nzOnCancel)="previewVisible = false"
+  >
+    <ng-template #modalContent>
+      <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+    </ng-template>
+  </nz-modal>
+</div>
+<label>Thêm từ link ảnh</label>
+<nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+  <input type="text" nz-input placeholder="Nhập link ảnh" [(ngModel)]="linkImagesAdd" />
+</nz-input-group>
+<ng-template #suffixIconButton>
+  <button nz-button nzType="primary"
+          type="button"
+          (click)="onClickAddLink()"
+          nzSearch><i nz-icon nzType="plus"></i></button>
+</ng-template>

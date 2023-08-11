@@ -1,0 +1,28 @@
+<div>
+  <of [schemaModel]="schemaForm"></of>
+</div>
+<div>
+  <h3 class="mt-3 mb-2">
+    Danh sách doanh nghiệp phụ trách
+  </h3>
+  <ng-container *ngFor="let it of listDoanhNghiep">
+    <div class="mb-2 row">
+      <div class="col-10">
+        <nz-tag [nzColor]="'green'" style="width: 100%;">
+          <app-doanh-nghiep-cell [doanhNghiepId]="it"></app-doanh-nghiep-cell>
+        </nz-tag>
+      </div>
+      <div class="col-2">
+        <button nz-button nzSize="small" nzType="dashed" (click)="onClose(it)">
+          <i nz-icon nzType="delete" nzTheme="outline"></i>
+          Xóa
+        </button>
+      </div>
+    </div>
+
+  </ng-container>
+</div>
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="destroyModal()">Đóng</button>
+  <button nz-button nzType="primary" (click)="onSave()">Lưu</button>
+</div>

@@ -1,0 +1,14 @@
+.table-row-bordered {
+  thead, tr, td, th {
+    border: 1px solid #dee2e6 !important;
+  }
+
+  td {
+    padding: 10px 8px 6px !important;
+  }
+
+  th {
+    padding: 12px 8px 10px !important;
+    color: #212529 !important;
+  }
+}

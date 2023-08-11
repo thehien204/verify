@@ -1,0 +1,227 @@
+.content-card {
+  .GroupItem{
+    padding: 0px !important; margin: 0px !important; 
+  }
+  .GroupItemDetail{
+    padding: 0px !important; margin: 0px !important; 
+  }
+  img.ImgItemStyle{
+    margin-top: 9px !important;
+    width: 90% !important;
+    text-align: center !important;
+  }
+  .thong-tin-chung {
+    padding: 30px;
+
+    .anh {
+      img {
+        max-height: 400px;
+        width: 100%;;
+        border-radius: 16px 16px 0px 0px;
+      }
+
+      .info {
+        .is-not-verify{
+          color: #EE2D41;
+        }
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 17px;
+        /* or 114% */
+        color: #FFFFFF;
+
+        background: linear-gradient(34.8deg, #31A74A 10.59%, #8AC24A 91.24%);
+        border-radius: 0px 0px 16px 16px;
+        padding: 14px 20px;
+      }
+    }
+
+    .thong-tin {
+      .ten-sp {
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 36px;
+        align-items: center;
+        letter-spacing: 0.01em;
+        color: #1A202C;
+      }
+
+      .ten-dn {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0.01em;
+        color: #31A74A;
+      }
+
+      .diem {
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: 0.01em;
+        color: #1A202C;
+      }
+
+      .gia {
+        font-weight: 600;
+        font-size: 32px;
+        line-height: 48px;
+        color: #31A74A;
+      }
+
+      .chung-chi {
+        .tieu-de {
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 26px;
+          color: #4C535B;
+          padding: 20px 0;
+        }
+
+        img {
+          width: 100%;
+          max-width: 180px;
+        }
+      }
+    }
+  }
+
+  .sp-lien-quan {
+    background: #F6FAFF;
+    min-height: 50px;
+    padding: 00px;
+
+    .content-title {
+      text-transform: uppercase;
+    }
+
+    .item-sp {
+      cursor: pointer;
+      background: white;
+      padding: 0px;      
+      border-radius: 16px;
+      margin-left: 9px !important; 
+      padding: 0px !important; 
+      text-align: center; 
+      float: left; 
+      margin-bottom: 10px;
+      img {
+        max-height: 220px;
+        max-width: 220px;
+        width: 100%;
+        height: 100%;
+        border-radius: 16px 16px 0px 0px;
+        margin-bottom: 5px;
+      }
+      .is-verify {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 12px;
+        margin-bottom: 5px;
+        color: #31A74A;
+      }
+
+      .is-not-verify {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 12px;
+        color: #EE2D41;
+        margin-bottom: 5px;
+      }
+
+      .ten-sp {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 16px;
+        color: #1A202C;
+        margin-bottom: 5px;
+      }
+
+      .diem {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 14px;
+        letter-spacing: 0.01em;
+        color: #6E737E;
+        margin-bottom: 5px;
+      }
+
+      .gia {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 26px;
+        color: #25953F;
+
+      }
+    }
+  }
+
+  .nhan-xet-sp {
+    min-height: 200px;
+    padding: 30px;
+
+    .content-title {
+      text-transform: uppercase;
+    }
+  }
+}
+
+
+.card-sp {
+  background: white;
+  height: 100vh;
+
+  .title {
+    text-align: center;
+    background: #0e8016;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 48px;
+    color: #FFFFFF;
+    padding: 10px;
+  }
+
+}
+
+:host ::ng-deep nz-tabset {
+  nz-tabs-nav {
+    margin-bottom: 0 !important;
+  }
+
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #31A74A;;
+  }
+
+  .ant-tabs-tab:hover {
+    color: #31A74A;;
+  }
+
+  .ant-tabs-ink-bar {
+    background: #31A74A;
+  }
+}
+
+
+.container-sp {
+  //padding-right: 15px;
+  //padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  .container-sp {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container-sp {
+    width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container-sp {
+    width: 1170px;
+  }
+}

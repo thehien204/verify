@@ -1,0 +1,55 @@
+.text-right {
+  text-align: right !important;
+}
+
+.ord-pagination-wrap {
+  margin-top: 10px !important;
+
+  .ant-pagination {
+    display: inline !important;
+  }
+
+  .total-record {
+    font-weight: 700 !important;
+    margin-right: 6px !important;
+  }
+}
+
+.of-btn-group {
+  margin-top: 4px !important;
+}
+
+.of-is-active-checkbox {
+  margin-top: -25px !important;
+}
+
+
+.abp-toast-icon {
+  .icon {
+    color: white !important;
+  }
+}
+
+.of-item-wrap {
+  .ant-form-item-label {
+    margin-bottom: 3px !important;
+  }
+}
+
+.ord-of-create-update {
+  .ant-drawer-body {
+    padding-top: 0 !important;
+  }
+}
+
+.e-columnheader {
+  height: 50px !important;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}

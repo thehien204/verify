@@ -1,0 +1,16 @@
+<of [schemaModel]="searchSchema">
+  <ng-template of-template="btn">
+    <div class="btn-search-group">
+      <button *ngIf="hasSearchBtn" nzType="primary" nz-button (click)="onSearch()">
+        <i nz-icon nzType='search'></i>{{'search' | translate}}
+      </button>
+      <ng-content select="[buttonExtends]"></ng-content>
+    </div>
+  </ng-template>
+</of>
+
+<style scope>
+  .btn-search-group {
+    margin-top: 5px !important;
+  }
+</style>

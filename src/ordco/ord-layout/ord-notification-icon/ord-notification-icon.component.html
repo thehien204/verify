@@ -1,0 +1,58 @@
+<nz-badge [nzCount]="count$|async" *ngIf="(listNotiData$| async) as listNotiData">
+  <i nz-icon
+     nz-dropdown
+     style="font-size: 22px; cursor: pointer"
+     [nzDropdownMenu]="menu"
+     nzType="bell" nzTheme="outline"></i>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <nz-card [nzTitle]="nzTitle" [nzLoading]="loading" [nzExtra]="extra" [nzBordered]="false"
+             class="ant-card__body-nopadding">
+      <ng-template #nzTitle>
+        {{count$|async}} {{'NewNotifications' | translate}}
+      </ng-template>
+      <ng-template #extra>
+        <a>
+          {{'Settings' | translate}}
+        </a>
+      </ng-template>
+      <div *ngIf="listNotiData?.length === 0; else listTpl" class="notice-icon__notfound">
+        <p>{{"ThereIsNoNotification" | translate}}</p>
+      </div>
+      <ng-template #listTpl>
+        <nz-list nzSize="small" [nzDataSource]="listNotiData" [nzRenderItem]="item">
+          <ng-template #item let-item>
+            <nz-list-item (click)="gotoUrl(item)">
+              <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="nzDescription"
+                                 [nzAvatar]="nzAvatar">
+                <ng-template #nzTitle>
+                  {{item?.dataObject?.title}}
+                </ng-template>
+                <ng-template #nzDescription>
+                  <div *ngIf="item?.ngayGuiTin" class="notice-icon__item-time">
+                    {{item?.ngayGuiTin|momentFromNow}}
+                    <span *ngIf="item?.trangThai === enumTrangThaiTb.CHUA_DOC">
+                                          <a href="javascript:;"
+                                             class="notice-icon__item-extra"
+                                             (click)="setNotificationAsRead(item); $event.preventDefault(); $event.stopPropagation();">{{"SetAsRead" | translate}}</a>
+                              </span>
+                  </div>
+                </ng-template>
+                <ng-template #nzAvatar>
+                  <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+        <div class="notice-icon__clear" *ngIf="listNotiData.length">
+          <a href="javascript:;" (click)="setAllNotificationsAsRead();"
+             *ngIf="count$|async">{{"SetAllAsRead" | translate}}</a>
+          <nz-divider nzType="vertical" *ngIf="count$|async"></nz-divider>
+          <a routerLink="notifications/notifications-from-user">{{"SeeAllNotifications" | translate}}</a>
+        </div>
+      </ng-template>
+    </nz-card>
+  </nz-dropdown-menu>
+
+</nz-badge>
+

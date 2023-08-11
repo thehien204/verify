@@ -1,0 +1,169 @@
+<nz-row nzGutter="16">
+  <nz-col nzMd="24" nzLg="12">
+    <h3 class="text-primary">Thông tin đăng ký</h3>
+    <nz-descriptions [nzColumn]="6" nzLayout="vertical" nzSize="small">
+      <nz-descriptions-item nzSpan="6"
+                            [nzTitle]="dataItem.loaiDangKy === loaiDkEnum.YeuCauTuVan? 'Họ tên': 'Doanh nghiệp'">
+    <span class="text-primary">
+      {{dataItem.tenDoanhNghiep}}
+    </span>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzSpan="6" nzTitle="Địa chỉ" *ngIf="dataItem.loaiDangKy!== loaiDkEnum.YeuCauTuVan">
+        <div style="display: flex; flex-direction: column">
+          <div *ngIf="dataItem.diaChi">
+            {{dataItem.diaChi }}
+          </div>
+          <div>
+              <span *ngIf="dataItem.maXa">
+              {{dataItem.maXa | xaDisplayText :dataItem.maHuyen |async }} -
+            </span>
+            <span *ngIf="dataItem.maHuyen">
+              {{dataItem.maHuyen | huyenDisplayText: dataItem.maTinh |async }}  -
+            </span>
+            <span *ngIf="dataItem.maTinh">
+              {{dataItem.maTinh | tinhDisplayText |async }}
+            </span>
+          </div>
+        </div>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzSpan="3" nzTitle="Điện thoại">{{dataItem.soDienThoai}}</nz-descriptions-item>
+      <nz-descriptions-item nzSpan="3" nzTitle="Email">{{dataItem.email}}</nz-descriptions-item>
+      <nz-descriptions-item nzSpan="3"
+                            nzTitle="Ngày đăng ký">{{dataItem.ngayDangKy|momentFormat:'DD/MM/yyyy'}}</nz-descriptions-item>
+      <nz-descriptions-item nzSpan="3" nzTitle="Loại hình đăng ký">{{dataItem.strLoaiDangKy}}</nz-descriptions-item>
+      <nz-descriptions-item nzSpan="3" nzTitle="Tổng tiền ">
+        <span class="bold">{{dataItem.tongTien}}</span>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzSpan="3" nzTitle="Chiết khấu">
+        {{dataItem.chietKhau}}
+        {{dataItem.chietKhauTheoId === chietKhauEnum.PhanTram ? "%" : "đ"}}
+      </nz-descriptions-item>
+    </nz-descriptions>
+    <h3 class="text-primary">Chi tiết dịch vụ</h3>
+    <nz-table
+      [nzShowPagination]="false"
+      nzTemplateMode [nzData]="listDichVu">
+      <thead>
+      <tr>
+        <th nzAlign="center" nzWidth="50">STT</th>
+        <th>Tên dịch vụ</th>
+        <th nzAlign="center" nzWidth="100">Số lượng</th>
+        <th nzAlign="center" nzWidth="100">SL tháng đăng ký</th>
+        <th nzAlign="center" nzWidth="100">Tổng tiền</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let dataItem of listDichVu; index as i">
+        <td nzAlign="center">{{i + 1}}</td>
+        <td>{{dataItem.tenLoaiDichVu}}</td>
+        <td nzAlign="center">{{dataItem.soLuong}}</td>
+        <td nzAlign="right">{{dataItem.soLuongThoiGian}}</td>
+        <td nzAlign="right">{{dataItem.giaThanhToan}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nz-col>
+  <nz-col nzMd="24" nzLg="12">
+    <h3 class="text-primary">Thông tin hợp đồng</h3>
+    <form nz-form [formGroup]="rfFormGroup" nzLayout="vertical">
+      <nz-form-item>
+        <nz-form-label nzRequired>Mã số thuế</nz-form-label>
+        <nz-form-control nzErrorTip="Giá trị bắt buộc!">
+          <input nz-input formControlName="maSoThue"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired>Tên doanh nghiệp</nz-form-label>
+        <nz-form-control nzErrorTip="Giá trị bắt buộc!">
+          <input nz-input formControlName="tenDoanhNghiep"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>Địa chỉ</nz-form-label>
+        <nz-form-control nzErrorTip="Giá trị bắt buộc!">
+          <input nz-input formControlName="diaChi"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired>Email người nhân hoá đơn</nz-form-label>
+        <nz-form-control nzErrorTip="Giá trị bắt buộc!">
+          <input nz-input formControlName="emailNhanHoaDon"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-table nzTemplateMode>
+        <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên tài liệu</th>
+          <th style="width: 120px">Tệp đính kèm</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let control of rfArrTepDinhKem.controls; index as i" [formGroup]="control">
+          <td>{{i + 1}}</td>
+          <td>
+            <nz-form-item>
+              <nz-form-control>
+                <input nz-input formControlName="tenTaiLieu">
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td>
+            <nz-form-item>
+              <nz-form-control>
+                <ora-upload-file
+                  [alowUpload]="false"
+                  [downloadName]="control.get('tenTaiLieu').value"
+                  uploadText="Chọn file khác"
+                  [selectedMulti]="false"
+                  [singleOutput]="true"
+                  formControlName="documentIds"></ora-upload-file>
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+        </tr>
+
+        </tbody>
+      </nz-table>
+      <h3 class="text-primary">Thông tin phê duyệt</h3>
+      <form [formGroup]="rfFormGroupPheDuyet" nz-form nzLayout="vertical">
+        <nz-form-item>
+          <nz-form-label>Cách xử lý</nz-form-label>
+          <nz-form-control>
+            <ora-radio formControlName="isDongY" [dirCustomSource]="sourceTrueFalse"></ora-radio>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="rfFormGroupPheDuyet.get('isDongY').value;else tplTuChoi">
+          <nz-form-label nzRequired>Ngày phê duyệt</nz-form-label>
+          <nz-form-control nzErrorTip="Giá trị bắt buộc!">
+            <ora-date-picker formControlName="ngayDuyet"></ora-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <ng-template #tplTuChoi>
+          <nz-form-item>
+            <nz-form-label nzRequired>Lý do từ chối</nz-form-label>
+            <nz-form-control nzErrorTip="Giá trị bắt buộc!">
+              <textarea nz-input rows="3" formControlName="lyDoTuChoi" placeholder="Nhập lý do từ chối...."></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-template>
+      </form>
+    </form>
+    <div class="text-right" style="margin-top: 10px">
+      <button nz-button nzType="default" (click)="close()">Đóng</button>
+      <button style="margin-left: 5px" *ngIf="dataItem.trangThai===trangThaiEnum.YeuCauDnLamHoSo" nz-button
+              nzType="primary" (click)="xuLy()">
+        Xử lý
+      </button>
+    </div>
+  </nz-col>
+</nz-row>
+<!--<div *nzModalFooter>-->
+<!--  <button nz-button nzType="default" (click)="close()">Đóng</button>-->
+<!--  <button nzDanger *ngIf="dataItem.trangThai===trangThaiEnum.ChoDuyet" nz-button nzType="primary" (click)="tuChoi()">-->
+<!--    Từ chối-->
+<!--  </button>-->
+<!--  <button *ngIf="dataItem.trangThai===trangThaiEnum.ChoDuyet || dataItem.trangThai===trangThaiEnum.TuChoi" nz-button nzType="primary" (click)="xuLy()">-->
+<!--    Xử lý-->
+<!--  </button>-->
+<!--</div>-->

@@ -1,0 +1,52 @@
+.root-confirm {
+  .image {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 31px;
+
+    img {
+      height: 162px;
+    }
+  }
+
+  .title {
+    margin-bottom: 18px;
+    margin-left: 40px;
+    margin-right: 40px;
+    text-align: left;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 18px;
+  }
+
+  .message {
+    text-align: left;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: 42px;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .action {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+
+    .btn-ok {
+      margin-right: 20px;
+      min-width: 80px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .btn-cancel {
+      min-width: 80px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+  }
+}

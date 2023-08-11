@@ -1,0 +1,29 @@
+<nz-spin [nzSpinning]="loading">
+  <div class="me-7 mb-4">
+    <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+      <img [hidden]="localImg64"
+           [src]="urlImg(doanhNghiepModeDto?.thongTinBoSung?.logoUrl)" alt="logo-{{doanhNghiepModeDto.ten}}">
+      <img *ngIf="localImg64" [src]="localImg64" alt="logo-{{doanhNghiepModeDto.ten}}"/>
+
+      <div
+        class="position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-white h-20px w-20px">
+
+      </div>
+
+    </div>
+    <div class="mt-1 text-center">
+
+      <nz-upload [nzBeforeUpload]="beforeUpload"
+                 (nzChange)="handleChange($event)"
+                 [nzShowUploadList]="false"
+      >
+        <button nz-button>
+          <i nz-icon nzType="upload"></i>
+          Upload logo
+        </button>
+      </nz-upload>
+    </div>
+  </div>
+</nz-spin>
+
+

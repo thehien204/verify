@@ -1,0 +1,78 @@
+<app-search-page-shared layout="vertical" titlePage='Danh sách {{titlePage}}'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :titlePage}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+    <button nz-button nzType='primary' (click)='openCreateOrUpdate()'>
+      <i nz-icon nzType='plus' nzTheme='outline'></i> Thêm mới
+    </button>
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema"
+              [dataSourceFunc]="this.proxyServices.getList">
+<!--      <ord-column field="maXa" width="80">-->
+<!--        <ng-template ord-header>-->
+<!--          <app-common-header-sort-->
+<!--            headerText='Mã xã'-->
+<!--            field='maXa'-->
+<!--            [searchSchema]='searchSchema'></app-common-header-sort>-->
+<!--        </ng-template>-->
+<!--      </ord-column>-->
+      <ord-column field='tenXa' headerText='Tên xã' minWidth="200"></ord-column>
+      <ord-column width='160'>
+        <ng-template ord-header>
+          <span>Tên tỉnh</span>
+          <app-common-header-filter [searchSchema]="searchSchema"
+                                    [fields]="['maTinh']"
+                                    (onFilter)="onFilterColumn($event)"
+          ></app-common-header-filter>
+        </ng-template>
+        <ng-template ord-content let-data>
+          {{data.maTinh| tinhDisplayText| async}}
+        </ng-template>
+      </ord-column>
+      <ord-column width='180'>
+        <ng-template ord-header>
+          <span>Tên huyện</span>
+          <app-common-header-filter [searchSchema]="searchSchema"
+                                    [fields]="['maTinh','maHuyen']"
+                                    (onFilter)="onFilterColumn($event)"
+          ></app-common-header-filter>
+        </ng-template>
+        <ng-template ord-content let-data>
+          {{data.maHuyen| huyenDisplayText: data.maTinh | async}}
+        </ng-template>
+      </ord-column>
+      <ord-column width='150' textAlign='Center'>
+        <ng-template ord-header>
+          <span>Sử dụng</span>
+          <app-common-header-filter [searchSchema]="searchSchema"
+                                    width="120"
+                                    [fields]="['isActive']"
+                                    (onFilter)="onFilterColumn($event)"
+          ></app-common-header-filter>
+        </ng-template>
+        <ng-template ord-content let-record>
+          <app-common-cell-is-active [isActive]="record.isActive"></app-common-cell-is-active>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thao tác' width='120' textAlign="Center">
+        <ng-template ord-content let-record>
+          <app-common-grid-actions>
+            <app-common-grid-action-item actionType='edit'
+                                         (onclickEvent)='openCreateOrUpdate(record)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionType='delete'
+                                         (onclickEvent)='delete(record)'></app-common-grid-action-item>
+          </app-common-grid-actions>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>
+

@@ -1,0 +1,106 @@
+<app-search-page-shared layout="horizontal" titlePage='Danh sách tài khoản người dùng'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema">
+    </app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'người dùng'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+    <button nz-button nzType='primary' (click)='openCreate()'>
+      <i nz-icon nzType='plus' nzTheme='outline'></i> Thêm mới
+    </button>
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema" [dataSourceFunc]="getList" rowHeight="50">
+      <ord-column field="userName" width="250">
+        <ng-template ord-header>
+          <app-common-header-sort
+            headerText='Tên đăng nhập'
+            field='userName'
+            [searchSchema]='searchSchema'></app-common-header-sort>
+        </ng-template>
+      </ord-column>
+      <ord-column width='180'>
+        <ng-template ord-header>
+          <span>Tên tỉnh</span>
+          <app-common-header-filter
+            [searchSchema]="searchSchema"
+            [fields]="['maTinh']"
+            (onFilter)="onFilterColumn($event)"
+          ></app-common-header-filter>
+        </ng-template>
+        <ng-template ord-content let-data>
+          {{data.maTinh| tinhDisplayText| async}}
+        </ng-template>
+      </ord-column>
+      <ord-column width='180'>
+        <ng-template ord-header>
+          <span>Tên huyện</span>
+          <app-common-header-filter
+            *ngIf="searchSchema?.form?.value?.maTinh"
+            [searchSchema]="searchSchema"
+            [fields]="['maHuyen']"
+            (onFilter)="onFilterColumn($event)"
+          ></app-common-header-filter>
+        </ng-template>
+        <ng-template ord-content let-data>
+          {{data.maHuyen| huyenDisplayText: data.maTinh | async}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Tên xã' width='180'>
+        <ng-template ord-content let-data>
+          {{data.maXa| xaDisplayText: data.maHuyen | async}}
+        </ng-template>
+      </ord-column>
+      <ord-column field='name' headerText='Tên người dùng' minWidth="200"></ord-column>
+      <ord-column headerText='Loại tài khoản' width='150'>
+        <ng-template ord-content let-data>
+          {{data.loaiTaiKhoan | loaiTaiKhoanDisplayText | async}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Trạng thái' width='120' textAlign='Center'>
+        <ng-template ord-content let-data>
+          <app-common-cell-is-active [isActive]="!data.locked" trueText="Đã kích hoạt"
+                                     falseText="Đã khóa"></app-common-cell-is-active>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thao tác' width='120' textAlign="Center">
+        <ng-template ord-content let-data>
+          <app-common-grid-actions>
+            <app-common-grid-action-item actionType='edit' title="Sửa thông tin người dùng"
+                                         (onclickEvent)='openEdit(data)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionName="Đổi mật khẩu" nzIcon="key"
+                                         (onclickEvent)='openChangePassword(data)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item  actionName='Gán doanh nghiệp'
+                                         nzIcon="menu-unfold"
+                                         (onclickEvent)='openGanDoanhNghiepModal(data)'
+            ></app-common-grid-action-item>
+
+            <app-common-grid-action-item actionName='Khóa tài khoản' *ngIf="data.lockoutEnabled && !data.locked"
+                                         nzIcon="lock"
+                                         (onclickEvent)='onLockUser(data,true)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionName='Mở tài khoản' *ngIf="data.lockoutEnabled && data.locked"
+                                         nzIcon="unlock"
+                                         (onclickEvent)='onLockUser(data,false)'
+            ></app-common-grid-action-item>
+
+
+            <app-common-grid-action-item actionName='Gán vai trò'
+                                         nzIcon="setting"
+                                         (onclickEvent)='onGrantRole(data)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionType='delete'
+                                         (onclickEvent)='delete(data)'></app-common-grid-action-item>
+          </app-common-grid-actions>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>
+

@@ -1,0 +1,17 @@
+.btn-custom-select-date-range {
+  border-radius: unset !important;
+  margin-left: -3px;
+  margin-top: 8px;
+}
+
+.ul-menu-select-date-range {
+  width: 350px !important;
+
+  .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
+    background-color: white !important;
+  }
+}
+
+.tu-ngay-den-ngay-custom-select-box {
+  margin-top: 3px !important;
+}

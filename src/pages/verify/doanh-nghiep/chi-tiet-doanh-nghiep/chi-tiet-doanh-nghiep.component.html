@@ -1,0 +1,37 @@
+<div id="kt_content_container" class="container-xxl" *ngIf="doanhNghiepModeDto">
+  <div class="card mb-5 mb-xxl-8">
+    <div class="card-body pt-9 pb-0">
+      <div class="d-flex flex-wrap flex-sm-nowrap">
+        <app-logo-doanh-nghiep [doanhNghiepModeDto]="doanhNghiepModeDto"></app-logo-doanh-nghiep>
+        <app-thong-tin-co-ban-dn [doanhNghiepModeDto]="doanhNghiepModeDto"></app-thong-tin-co-ban-dn>
+      </div>
+      <div class="d-flex overflow-auto h-55px" style="margin-top: -19px">
+        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap">
+          <li class="nav-item" (click)="changeTab('san-pham')">
+            <a class="nav-link text-active-primary me-6" [class.active]="currentTab==='san-pham'">SẢN PHẨM</a>
+          </li>
+          <li class="nav-item" (click)="changeTab('goi-dv-dn')">
+            <a class="nav-link text-active-primary me-6" [class.active]="currentTab==='goi-dv-dn'">GÓI DỊCH VỤ ĐĂNG KÝ</a>
+          </li>
+          <li class="nav-item" (click)="changeTab('doanh-nghiep-ma-dd')">
+            <a class="nav-link text-active-primary me-6" [class.active]="currentTab==='doanh-nghiep-ma-dd'">MÃ ĐỊA ĐIỂM TOÀN CẦU</a>
+          </li>
+          <li class="nav-item" (click)="changeTab('quan-ly-tai-khoan-dn')">
+            <a class="nav-link text-active-primary me-6" [class.active]="currentTab==='quan-ly-tai-khoan-dn'">QUẢN LÝ TÀI KHOẢN DOANH NGHIỆP</a>
+          </li>
+          <li class="nav-item" (click)="changeTab('tin-tuc')">
+            <a class="nav-link text-active-primary me-6" [class.active]="currentTab==='tin-tuc'">TIN TỨC</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>`
+  </div>
+  <app-san-pham-doanh-nghiep [hidden]="currentTab !== 'san-pham'" [doanhNghiepModeDto]="doanhNghiepModeDto"></app-san-pham-doanh-nghiep>
+  <goi-dv-doanh-nghiep-dang-ky *ngIf="currentTab==='goi-dv-dn'" [doanhNghiepModeDto]="doanhNghiepModeDto"></goi-dv-doanh-nghiep-dang-ky>
+  <doanh-nghiep-ma-dia-diem *ngIf="currentTab==='doanh-nghiep-ma-dd'" [doanhNghiepModeDto]="doanhNghiepModeDto"></doanh-nghiep-ma-dia-diem>
+  <quan-ly-tai-khoan-dn  *ngIf="currentTab==='quan-ly-tai-khoan-dn'" [doanhNghiepModeDto]="doanhNghiepModeDto"></quan-ly-tai-khoan-dn>
+</div>
+
+
+

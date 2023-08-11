@@ -1,0 +1,36 @@
+<app-search-page-shared layout="horizontal" titlePage='Báo cáo tài khoản' [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'tài khoản'}}
+  </span>
+  <span actionBtnPage>
+    <button nz-button nzType="default" (click)="onDownloadExcel()">
+      <span nz-icon nzType="download"></span>
+      Tải xuống Excel
+    </button>
+  </span>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema" [dataSourceFunc]="getList">
+      <ord-column headerText='Ngày thực hiện' width="160">
+        <ng-template ord-content let-record>
+          {{record?.creationTime | date :'dd/MM/yyyy - HH:mm:ss'}}
+        </ng-template>
+      </ord-column>
+      <ord-column field='userName' headerText='UserName' ></ord-column>
+      <ord-column field='email' headerText='Email'></ord-column>
+      <ord-column headerText="Xác thực email" textAlign="Center" width="160">
+        <ng-template ord-content let-record>
+          <nz-tag [nzColor]="record.emailConfirmed? 'green':'red'">
+            {{record.emailConfirmed ? 'Đã xác thực' : 'Chưa xác thực'}}
+          </nz-tag>
+        </ng-template>
+      </ord-column>
+      <ord-column field='loaiTaiKhoanStr' headerText='Loại tài khoản'></ord-column>
+      <ord-column field='phoneNumber' headerText='Số điện thoại'></ord-column>
+
+    </ord-grid>
+  </div>
+</app-search-page-shared>

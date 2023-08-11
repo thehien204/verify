@@ -1,0 +1,65 @@
+<app-search-page-shared layout="horizontal" titlePage='Quản lý thông báo'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'thông báo'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+    <button nz-button (click)='openCreate()'>
+      Thêm mới
+    </button>
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema"
+              [dataSourceFunc]="this.proxyServices.getList">
+      <ord-column headerText='Ngày tạo' width="150">
+        <ng-template ord-header>
+          <app-common-header-sort
+            headerText='Ngày tạo'
+            field='ngayTaoThongBao'
+            [searchSchema]='searchSchema'></app-common-header-sort>
+        </ng-template>
+
+        <ng-template ord-content let-record>
+          {{record.ngayTaoThongBao | date:'dd/MM/yyyy'}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Tên thông báo' width="150">
+        <ng-template ord-content let-record>
+          {{record.notificationName | tenThongBaoDisplayText|async}}
+        </ng-template>
+      </ord-column>
+      <ord-column width="100">
+        <ng-template ord-header>
+          <app-common-header-sort
+            headerText='Loại thông báo'
+            field='loaiThongBao'
+            [searchSchema]='searchSchema'></app-common-header-sort>
+        </ng-template>
+        <ng-template ord-content let-record>
+          {{record.loaiThongBao | loaiThongBaoDisplayText | async}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Đối tượng nhận TB' width="150">
+        <ng-template ord-content let-record>
+          {{record.strDoiTuongNhanTb}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thao tác' width='130' textAlign="Center">
+        <ng-template ord-content let-record>
+          <app-common-grid-actions *ngIf="record.loaiThongBao === enumLoaiTB.DAT_LICH">
+            <app-common-grid-action-item
+              actionType='edit'
+              (onclickEvent)='openUpdate(record)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionType='delete'
+                                         (onclickEvent)='delete(record)'></app-common-grid-action-item>
+          </app-common-grid-actions>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>

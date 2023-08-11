@@ -1,0 +1,19 @@
+<ng-container *ngIf="doanhNghiepDto">
+  <span class="me-2">({{doanhNghiepDto.maDoanhNghiep}})</span>
+  <span>{{doanhNghiepDto.ten}}</span>
+  <div>
+    <span class="me-2"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+    <span *ngIf="doanhNghiepDto.diaChi">
+                {{doanhNghiepDto.diaChi }},
+              </span>
+    <span *ngIf="doanhNghiepDto.maXa">
+              {{doanhNghiepDto.maXa | xaDisplayText :doanhNghiepDto.maHuyen |async }} -
+            </span>
+    <span *ngIf="doanhNghiepDto.maHuyen">
+              {{doanhNghiepDto.maHuyen | huyenDisplayText: doanhNghiepDto.maTinh |async }}  -
+            </span>
+    <span *ngIf="doanhNghiepDto.maTinh">
+              {{doanhNghiepDto.maTinh | tinhDisplayText |async }}
+            </span>
+  </div>
+</ng-container>

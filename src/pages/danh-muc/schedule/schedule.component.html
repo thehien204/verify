@@ -1,0 +1,42 @@
+<app-search-page-shared layout="vertical" titlePage='Danh sách khung giờ'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'khung giờ'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+    <button nz-button nzType='primary' (click)='openCreateOrUpdate()'>
+      <i nz-icon nzType='plus' nzTheme='outline'></i> Thêm mới
+    </button>
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema"
+              [dataSourceFunc]="this.proxyServices.getList">
+      <ord-column field='name' headerText='Tên khung giờ' minWidth="200"></ord-column>
+      <ord-column headerText='Thời gian từ' width='90' textAlign='Center'>
+        <ng-template ord-content let-record>
+          {{record.khungGioStart | khungGioDisplay}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Đến' width='90' textAlign='Center'>
+        <ng-template ord-content let-record>
+          {{record.khungGioEnd | khungGioDisplay}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thao tác' width='130' textAlign="Center">
+        <ng-template ord-content let-record>
+          <app-common-grid-actions>
+            <app-common-grid-action-item actionType='edit'
+                                         (onclickEvent)='openCreateOrUpdate(record)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionType='delete'
+                                         (onclickEvent)='delete(record)'></app-common-grid-action-item>
+          </app-common-grid-actions>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>

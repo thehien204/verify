@@ -1,0 +1,92 @@
+<app-search-page-shared layout="horizontal" titlePage='Danh sách banner'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'banner'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+    <button nz-button nzType='primary' (click)='openCreateOrUpdate()'>
+      <i nz-icon nzType='plus' nzTheme='outline'></i> Thêm mới
+    </button>
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema"
+              rowHeight="120"
+              [dataSourceFunc]="this.proxyServices.getList">
+      <ord-column field="ma" width="130" headerText="GPDKKD">
+        <ng-template ord-content let-record>
+          {{record.doanhNghiep?.maDoanhNghiep}}
+        </ng-template>
+      </ord-column>
+      <ord-column width="200" headerText="Ảnh banner">
+        <ng-template ord-content let-record>
+          <img src="{{record.bannerImageUrl}}" alt="Ảnh banner" height="80"/>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thông tin doanh nghiệp'>
+        <ng-template ord-content let-record>
+          <ng-container *ngIf="record?.doanhNghiep">
+            <div class="text-primary ps-6">
+              <b>{{record.doanhNghiep.ten}}</b>
+            </div>
+            <div>
+              <span class="me-2"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+              <span *ngIf="record.doanhNghiep.diaChi">
+                {{record.doanhNghiep.diaChi }},
+              </span>
+              <span *ngIf="record.doanhNghiep.maXa">
+              {{record.doanhNghiep.maXa | xaDisplayText :record.doanhNghiep.maHuyen |async }} -
+            </span>
+              <span *ngIf="record.doanhNghiep.maHuyen">
+              {{record.doanhNghiep.maHuyen | huyenDisplayText: record.doanhNghiep.maTinh |async }}  -
+            </span>
+              <span *ngIf="record.doanhNghiep.maTinh">
+              {{record.doanhNghiep.maTinh | tinhDisplayText |async }}
+            </span>
+            </div>
+            <div>
+            <span *ngIf="record.doanhNghiep.soDienThoai">
+             <i class="fa fa-phone-square me-2" aria-hidden="true"></i>
+              {{record.doanhNghiep.soDienThoai }}
+            </span>
+              <span class="ms-5" *ngIf="record.doanhNghiep.email">
+              <i class="fa fa-envelope me-2" aria-hidden="true"></i>
+                {{record.doanhNghiep.email }}
+            </span>
+            </div>
+          </ng-container>
+
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Áp dụng từ ngày' width="130">
+        <ng-template ord-content let-record>
+          {{record.startDate | date:'dd/MM/yyyy'}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Đến ngày' width="130">
+        <ng-template ord-content let-record>
+          {{record.endDate | date:'dd/MM/yyyy'}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Trạng thái' width="100">
+        <ng-template ord-content let-record>
+          {{record.trangThai| trangThaiSanPhamNoiBatDisplayText | async}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thao tác' width='130' textAlign="Center">
+        <ng-template ord-content let-record>
+          <app-common-grid-actions>
+            <app-common-grid-action-item actionType='edit'
+                                         (onclickEvent)='openCreateOrUpdate(record)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionType='delete'
+                                         (onclickEvent)='delete(record)'></app-common-grid-action-item>
+          </app-common-grid-actions>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>

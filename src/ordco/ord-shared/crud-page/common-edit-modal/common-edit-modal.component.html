@@ -1,0 +1,9 @@
+<of [schemaModel]='schemaModel'></of>
+<div *nzModalFooter>
+  <button type='button' nz-button nzType='default' (click)='close()' [nzLoading]='btnBusy'>
+    <i nz-icon nzType='close' nzTheme='outline'></i>Đóng
+  </button>
+  <button type='submit' nz-button nzType='primary' (click)='save()' [nzLoading]='btnBusy'>
+    <i nz-icon nzType='save' nzTheme='outline'></i>{{saveBtnTitle || 'Lưu' }}
+  </button>
+</div>

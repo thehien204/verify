@@ -1,0 +1,33 @@
+.box-search {
+  .card-header {
+    min-height: 30px !important;
+    padding-bottom: 3px !important;
+  }
+
+  .card-body {
+    padding-top: 0 !important;
+    padding-bottom: 5px;
+  }
+}
+
+.ord-search-vertical {
+  .card-search {
+    .card-header {
+      min-height: 30px;
+      margin-top: 12px;
+    }
+  }
+
+  .ord-search-group {
+    text-align: right !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  .ord-search-group {
+    .ant-form-item-control {
+      margin-top: -20px;
+    }
+  }
+}
+

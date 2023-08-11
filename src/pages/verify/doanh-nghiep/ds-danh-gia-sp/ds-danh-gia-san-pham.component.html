@@ -1,0 +1,79 @@
+<app-search-page-shared layout="horizontal" titlePage='Danh sách đánh giá  sản phẩm'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'đánh giá sản phẩm sản phẩm'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema"
+              rowHeight="120"
+              [dataSourceFunc]="this.proxyServices.getList">
+      <ord-column field="ma" width="160">
+        <ng-template ord-header>
+          <app-common-header-sort
+            headerText='Mã (GTIN)'
+            field='ma'
+            [searchSchema]='searchSchema'>
+          </app-common-header-sort>
+        </ng-template>
+      </ord-column>
+      <!--      <ord-column width="230" textAlign="Center">-->
+      <!--        <ng-template ord-content let-record>-->
+      <!--          <ejs-barcodegenerator style="display: block;"-->
+      <!--                                width="200px" height="80px" mode="SVG"-->
+      <!--                                type="Ean13"-->
+      <!--                                [value]="record.ma"></ejs-barcodegenerator>-->
+      <!--        </ng-template>-->
+      <!--      </ord-column>-->
+      <ord-column width="160" textAlign="Center">
+        <ng-template ord-content let-record>
+          <img alt="" src="{{record.baseImageUrl}}" height="90">
+        </ng-template>
+      </ord-column>
+      <ord-column field='ten' headerText='Thông tin sản phẩm'>
+        <ng-template ord-content let-record>
+          <div>
+            <img src="./assets/images/icon/products.png" class="me-3 h-18"/>
+            <span class="text-primary product-name">{{record.ten}}</span>
+          </div>
+          <div>
+            <img src="./assets/images/icon/office-building.png" class="me-3 h-18"/>
+            <app-doanh-nghiep-cell [doanhNghiepId]="record.doanhNghiepId"></app-doanh-nghiep-cell>
+          </div>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Nhóm sản phẩm' width="200">
+        <ng-template ord-content let-record>
+          {{record.nhomSanPhamId | nhomSanPhamDisplayText | async}}
+        </ng-template>
+      </ord-column>
+      <ord-column textAlign="Center" headerText='Đánh giá' width="200">
+        <ng-template ord-content let-record>
+          <div>Tổng điểm: {{record.tongDiem}}</div>
+          <div>Tổng lượt đánh giá: {{record.tongLuotDanhGia}}</div>
+          <nz-rate nzDisabled [ngModel]="record.tongDiem/record.tongLuotDanhGia"></nz-rate>
+          <span
+            class="ant-rate-text">{{ record.tongLuotDanhGia ? ((record.tongDiem / record.tongLuotDanhGia)|number:'.0-1') : 0 }}
+            đ</span>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thao tác' width='130' textAlign="Center">
+        <ng-template ord-content let-record>
+          <app-common-grid-actions>
+            <app-common-grid-action-item nzIcon="wechat"
+                                         actionName="Xem bình luận"
+                                         (onclickEvent)='showDanhGiaSp(record)'></app-common-grid-action-item>
+            <app-common-grid-action-item nzIcon="setting"
+                                         actionName="Thiết lập điểm sản phẩm"
+                                         (onclickEvent)='thietLapDiemSanPham(record)'></app-common-grid-action-item>
+          </app-common-grid-actions>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>

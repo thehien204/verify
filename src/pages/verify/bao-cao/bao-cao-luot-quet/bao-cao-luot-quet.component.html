@@ -1,0 +1,26 @@
+<app-search-page-shared layout="horizontal" titlePage='Báo cáo lượt Quét' [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'lượt'}}
+  </span>
+  <span actionBtnPage>
+    <button nz-button nzType="default" (click)="onDownloadExcel()">
+      <span nz-icon nzType="download"></span>
+      Tải xuống Excel
+    </button>
+  </span>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema" [dataSourceFunc]="getList">
+      <ord-column headerText='Ngày thực hiện' width="160">
+        <ng-template ord-content let-record>
+          {{record?.creationTime | date :'dd/MM/yyyy - HH:mm:ss'}}
+        </ng-template>
+      </ord-column>
+      <ord-column field='tenSanPham' headerText='Sản phẩm' ></ord-column>
+      <ord-column field='tenDoanhNghiep' headerText='Doanh nghiệp'></ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>

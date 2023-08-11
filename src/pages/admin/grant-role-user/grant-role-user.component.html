@@ -1,0 +1,43 @@
+<div nz-row [nzGutter]="16">
+  <div nz-col nzSpan="8">
+    <div class="card mt-2">
+      <div class="card-header">
+        <div class="card-title">
+          <h3>Thông tin người dùng</h3>
+        </div>
+      </div>
+      <div class="card-body pt-1 pb-3">
+        <of [schemaModel]="informationForm"></of>
+      </div>
+
+    </div>
+  </div>
+  <div nz-col nzSpan="16">
+    <div class="card mt-2">
+      <div class="card-header">
+        <div class="card-title">
+          <h3>Danh sách vai trò dành cho người dùng</h3>
+        </div>
+      </div>
+      <div class="card-body pt-9 pb-3">
+        <ord-grid [bindDataSource]="roles"
+                  hasCheckboxColumn
+                  [(itemsChecked)]="roleGranted"
+        >
+          <ord-column field="name" headerText="Tên vai trò" width="150"></ord-column>
+          <ord-column headerText='Mô tả'>
+            <ng-template ord-content let-data>
+              {{data.description}}
+            </ng-template>
+          </ord-column>
+        </ord-grid>
+      </div>
+      <div class="card-footer pt-5 pb-3">
+        <app-save-button-group [btnBusy]="btnBusy"
+                               (onSave)="save()"
+                               (onClose)="close()"
+        ></app-save-button-group>
+      </div>
+    </div>
+  </div>
+</div>

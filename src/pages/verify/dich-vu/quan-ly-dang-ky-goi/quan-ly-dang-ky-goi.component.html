@@ -1,0 +1,94 @@
+<app-search-page-shared layout="horizontal" titlePage='Quản lý đăng ký gói dịch vụ'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'gói'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+    <!--    <button nz-button nzType="primary" (click)="setAllRead()">Thiết lập đọc toàn bộ</button>-->
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema"
+              tyLeChieuCaoDong="2"
+              [dataSourceFunc]="getList">
+      <ord-column headerText='Tên gói dịch vụ'>
+        <ng-template ord-content let-record>
+          {{record.tenGoiDichVu}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thông tin đăng ký'>
+        <ng-template ord-content let-record>
+          <div class="text-primary ps-6">
+            <b>{{record.tenDoanhNghiep}}</b>
+          </div>
+          <div *ngIf="record.doanhNghiepId>0">
+            <span class="me-2"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+            <span *ngIf="record.diaChi">
+                {{record.diaChi }}<br>
+              </span>
+          </div>
+          <div class="ms-6">
+              <span *ngIf="record.maXa">
+              {{record.maXa | xaDisplayText :record.maHuyen |async }} -
+            </span>
+            <span *ngIf="record.maHuyen">
+              {{record.maHuyen | huyenDisplayText: record.maTinh |async }}  -
+            </span>
+            <span *ngIf="record.maTinh">
+              {{record.maTinh | tinhDisplayText |async }}
+            </span>
+          </div>
+          <div>
+            <span>
+             <i class="fa fa-phone-square me-2" aria-hidden="true"></i>
+              {{record.soDienThoai }}
+            </span>
+            <span class="ms-5" *ngIf="record.email">
+              <i class="fa fa-envelope me-2" aria-hidden="true"></i>
+              {{record.email }}
+            </span>
+          </div>
+          <div>Ngày đăng ký: {{record.ngayDangKy | date:'dd/MM/yyyy'}}</div>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Tổng tiền' width="200" textAlign="Center">
+        <ng-template ord-content let-record>
+          <div class="bold">{{record.tongTien}}</div>
+          <div class="italic">({{record.soLuongThoiGian}} tháng)</div>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Loại hình đăng ký' width="100" textAlign="Center">
+        <ng-template ord-content let-record>
+          {{record.strLoaiDangKy}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Trạng thái' width="150" textAlign="Center">
+        <ng-template ord-content let-record>
+          <span [class.text-cho-duyet]="record.trangThai === trangThaiEnum.ChoDuyet">
+             {{record.strTrangThai}}
+          </span>
+          <div *ngIf="record.strTrangThaiHopDongDn" class="text-cho-duyet">
+            <span *ngIf="record.trangThaiHopDongDn===trangThaiHdDnEnum.DaGuiYeuCauLapHD;else trlTrangThai">
+              Doanh nghiệp đã gửi hợp đồng
+            </span>
+            <ng-template #trlTrangThai> {{record.strTrangThaiHopDongDn}}</ng-template>
+          </div>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thao tác' width="150" textAlign="Center">
+        <ng-template ord-content let-record>
+          <app-common-grid-actions>
+            <app-common-grid-action-item nzIcon='eye' title="Xem"
+                                         (onclickEvent)='xemChiTiet(record)'
+            ></app-common-grid-action-item>
+            <!--            <app-common-grid-action-item actionType='delete'-->
+            <!--                                         (onclickEvent)='delete(record)'></app-common-grid-action-item>-->
+          </app-common-grid-actions>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>

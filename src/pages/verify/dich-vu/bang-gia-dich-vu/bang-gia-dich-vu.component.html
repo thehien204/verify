@@ -1,0 +1,78 @@
+<app-search-page-shared layout="horizontal" titlePage='Danh sách bảng giá dịch vụ'
+                        [pageSpinning]='loading'>
+  <div boxSearchPage id='box-search-page'>
+    <app-search-form [searchSchema]="searchSchema"></app-search-form>
+  </div>
+  <span titleExtendPage>
+    {{vcGrid.nzTable | titleTotalRecordTable :'bảng giá dịch vụ'}}
+  </span>
+  <div actionBtnPage id='action-btn-page'>
+    <button nz-button nzType='primary' (click)='openCreateOrUpdate()'>
+      <i nz-icon nzType='plus' nzTheme='outline'></i> Thêm mới
+    </button>
+  </div>
+  <!-- content page -->
+  <div contentPage id='content-page'>
+    <ord-grid #vcGrid [searchSchema]="searchSchema"
+              [dataSourceFunc]="this.proxyServices.getList">
+      <ord-column headerText='Áp dụng từ ngày' width="150">
+        <ng-template ord-content let-record>
+          {{record.ngayHieuLuc | date:'dd/MM/yyyy'}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Áp dụng đến ngày' width="150">
+        <ng-template ord-content let-record>
+          {{record.ngayHetHieuLuc | date:'dd/MM/yyyy'}}
+        </ng-template>
+      </ord-column>
+      <ord-column field='ten' headerText='Tên' minWidth="200"></ord-column>
+      <ord-column width="200">
+        <ng-template ord-header>
+          <app-common-header-sort
+            headerText='Loại dịch vụ'
+            field='loaiDichVuId'
+            [searchSchema]='searchSchema'></app-common-header-sort>
+        </ng-template>
+        <ng-template ord-content let-record>
+          {{record.loaiDichVuId | loaiDichVuDisplayText | async}}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Đơn giá' width='200' textAlign="Right">
+        <ng-template ord-content let-record>
+          {{record.donGia | currency:"VND":true }}
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Đơn vị tính' width='120'>
+        <ng-template ord-content let-record>
+          Tháng
+<!--          {{record.donViTinh | donViTinhGiaDisplayText | async}}-->
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Trạng thái' width='120'>
+        <ng-template ord-content let-record>
+          <b class="text-primary" *ngIf="record.isActive">Mở</b>
+          <b class="text-danger" *ngIf="!record.isActive">Khóa</b>
+        </ng-template>
+      </ord-column>
+      <ord-column headerText='Thao tác' width='130' textAlign="Center">
+        <ng-template ord-content let-record>
+          <app-common-grid-actions>
+            <app-common-grid-action-item actionType='edit'
+                                         (onclickEvent)='openCreateOrUpdate(record)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item nzIcon="lock" *ngIf="record.isActive"
+                                         actionName="Khóa"
+                                         (onclickEvent)='lock(record.id,true)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item nzIcon="unlock" *ngIf="!record.isActive"
+                                         actionName="Mở khóa"
+                                         (onclickEvent)='lock(record.id,false)'
+            ></app-common-grid-action-item>
+            <app-common-grid-action-item actionType='delete'
+                                         (onclickEvent)='delete(record)'></app-common-grid-action-item>
+          </app-common-grid-actions>
+        </ng-template>
+      </ord-column>
+    </ord-grid>
+  </div>
+</app-search-page-shared>

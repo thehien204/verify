@@ -1,0 +1,21 @@
+<div class="mb-3 all-check">
+  <label nz-checkbox [(ngModel)]="checkedAll" (ngModelChange)="onCheckAll()">{{'selectedAll'|translate}}</label>
+  <button nz-button nzType='dashed' (click)='onExpandAll()' class='ms-20' nzSize='small'>
+    <i nz-icon nzType='arrows-alt' nzTheme='outline'></i>
+    Mở rộng danh sách
+  </button>
+</div>
+<nz-tree
+  [nzData]='treePermission'
+  [nzCheckable]='true'
+  [nzShowLine]='false'
+  [nzExpandAll]="expandAll"
+  [nzCheckedKeys]='grantedPermissions'
+  (nzCheckBoxChange)="onCheckboxChange()"
+  class='mt-md'
+></nz-tree>
+<style scope>
+  .all-check {
+    padding-left: 24px !important;
+  }
+</style>

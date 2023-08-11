@@ -1,0 +1,71 @@
+<h3 class="text-primary">Thông tin đăng ký</h3>
+<nz-descriptions [nzColumn]="6" nzLayout="vertical" nzSize="small">
+  <nz-descriptions-item nzSpan="6" [nzTitle]="dataItem.loaiDangKy === loaiDkEnum.YeuCauTuVan? 'Họ tên': 'Doanh nghiệp'">
+    <span class="text-primary">
+      {{dataItem.tenDoanhNghiep}}
+    </span>
+  </nz-descriptions-item>
+  <nz-descriptions-item nzSpan="6" nzTitle="Địa chỉ" *ngIf="dataItem.loaiDangKy!== loaiDkEnum.YeuCauTuVan">
+    <div style="display: flex; flex-direction: column">
+      <div *ngIf="dataItem.diaChi">
+        {{dataItem.diaChi }}
+      </div>
+      <div>
+              <span *ngIf="dataItem.maXa">
+              {{dataItem.maXa | xaDisplayText :dataItem.maHuyen |async }} -
+            </span>
+        <span *ngIf="dataItem.maHuyen">
+              {{dataItem.maHuyen | huyenDisplayText: dataItem.maTinh |async }}  -
+            </span>
+        <span *ngIf="dataItem.maTinh">
+              {{dataItem.maTinh | tinhDisplayText |async }}
+            </span>
+      </div>
+    </div>
+  </nz-descriptions-item>
+  <nz-descriptions-item nzSpan="3" nzTitle="Điện thoại">{{dataItem.soDienThoai}}</nz-descriptions-item>
+  <nz-descriptions-item nzSpan="3" nzTitle="Email">{{dataItem.email}}</nz-descriptions-item>
+  <nz-descriptions-item nzSpan="3"
+                        nzTitle="Ngày đăng ký">{{dataItem.ngayDangKy|momentFormat:'DD/MM/yyyy'}}</nz-descriptions-item>
+  <nz-descriptions-item nzSpan="3" nzTitle="Loại hình đăng ký">{{dataItem.strLoaiDangKy}}</nz-descriptions-item>
+  <nz-descriptions-item nzSpan="3" nzTitle="Tổng tiền ">
+    <span class="bold">{{dataItem.tongTien}}</span>
+  </nz-descriptions-item>
+  <nz-descriptions-item nzSpan="3" nzTitle="Chiết khấu">
+    {{dataItem.chietKhau}}
+    {{dataItem.chietKhauTheoId === chietKhauEnum.PhanTram ? "%" : "đ"}}
+  </nz-descriptions-item>
+</nz-descriptions>
+<h3 class="text-primary">Chi tiết dịch vụ</h3>
+<nz-table
+          [nzShowPagination]="false"
+          nzTemplateMode [nzData]="listDichVu">
+  <thead>
+  <tr>
+    <th nzAlign="center" nzWidth="50">STT</th>
+    <th>Tên dịch vụ</th>
+    <th nzAlign="center" nzWidth="100">Số lượng</th>
+    <th nzAlign="center" nzWidth="100">SL tháng đăng ký</th>
+    <th nzAlign="center" nzWidth="100">Tổng tiền</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let dataItem of listDichVu; index as i">
+    <td nzAlign="center">{{i + 1}}</td>
+    <td>{{dataItem.tenLoaiDichVu}}</td>
+    <td nzAlign="center">{{dataItem.soLuong}}</td>
+    <td nzAlign="right">{{dataItem.soLuongThoiGian}}</td>
+    <td nzAlign="right">{{dataItem.giaThanhToan}}</td>
+  </tr>
+  </tbody>
+</nz-table>
+<of *ngIf="modalSchema" [schemaModel]='modalSchema'></of>
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="close()">Đóng</button>
+  <button nzDanger *ngIf="dataItem.trangThai===trangThaiEnum.ChoDuyet" nz-button nzType="primary" (click)="tuChoi()">
+    Huỷ yêu cầu đăng ký
+  </button>
+  <button *ngIf="dataItem.trangThai===trangThaiEnum.ChoDuyet || dataItem.trangThai===trangThaiEnum.TuChoi" nz-button nzType="primary" (click)="yeuCauLapHoSo()">
+    Yêu cầu lập hồ sơ
+  </button>
+</div>

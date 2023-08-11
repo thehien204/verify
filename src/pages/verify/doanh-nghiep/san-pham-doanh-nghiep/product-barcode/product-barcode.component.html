@@ -1,0 +1,25 @@
+<div class="text-center" *ngIf="type==='barcode'" style="width:300px !important;">
+
+<!--  <ejs-barcodegenerator *ngIf="productDto?.ma" style="display: block;" #barcode id="barcode" width="200px"-->
+<!--                        height="150px"-->
+<!--                        mode="SVG" type="Ean13" value="{{productDto.ma}}">-->
+<!--  </ejs-barcodegenerator>-->
+  <img [src]="barCodeLink" style="width:300px"/>
+
+</div>
+<div class="text-center" *ngIf="type==='qrcode'">
+  <ejs-qrcodegenerator style="display: block;"
+                       [displayText]="displeyText"
+                       logo="http://localhost:4200/assets/images/icon/LogoQR.png"
+                       logoWidth="250px"
+                      logoHeight="250px"
+                       id="qrcode" width="200px" height="200px" mode="SVG"
+                       value="{{QRCodeLink}}"></ejs-qrcodegenerator>
+</div>
+<div *nzModalFooter>
+  <button nz-button nzType="primary" (click)="close()">
+    <i nz-icon nzType="close"></i>
+    Đóng
+  </button>
+</div>
+

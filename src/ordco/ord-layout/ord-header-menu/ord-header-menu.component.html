@@ -1,0 +1,44 @@
+<ng-container *ngFor='let menu1 of tree'>
+  <ng-container *ngIf='menu1 |showMenuItem'>
+    <div
+      class="menu-item menu-lg-down-accordion me-lg-1 menu-dropdown"
+      data-kt-menu-trigger="hover"
+      data-kt-menu-placement="bottom-start">
+      <ng-container [ngTemplateOutlet]="menuLink" [ngTemplateOutletContext]="{menuItem:menu1}"></ng-container>
+      <ng-container [ngTemplateOutlet]="tplMenuChild" [ngTemplateOutletContext]="{menuItem:menu1}"></ng-container>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #tplMenuChild let-item='menuItem'>
+  <div *ngIf="!item.isLeaf" class=" menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown
+      menu-rounded-0 py-lg-4 w-lg-225px" data-kt-menu-dismiss="true">
+    <ng-container *ngFor="let child of item.children">
+      <div *ngIf="child |showMenuItem"
+           class="menu-item menu-lg-down-accordion me-lg-1"
+           data-kt-menu-trigger="hover"
+           data-kt-menu-placement="right-start">
+        <ng-container [ngTemplateOutlet]="menuLink" [ngTemplateOutletContext]="{menuItem:child}"></ng-container>
+        <ng-container [ngTemplateOutlet]="tplMenuChild" [ngTemplateOutletContext]="{menuItem:child}"></ng-container>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+
+<ng-template #menuLink let-item='menuItem'>
+  <!--start is leaf-->
+  <a *ngIf="item.isLeaf" class="menu-link py-3" routerLinkActive="active"
+     routerLink="{{item.path}}">
+    <app-ord-menu-icon [menuItem]="item"></app-ord-menu-icon>
+    <span class="menu-title">{{item.name | translate}}</span>
+  </a>
+  <!--end is leaf-->
+  <span *ngIf="!item.isLeaf" class="menu-link py-3"
+        [ngClass]="calculateMenuItemCssClass(item.name)">
+     <app-ord-menu-icon [menuItem]="item"></app-ord-menu-icon>
+    <span class="menu-title" data-link="/crafted/account">{{item.name | translate}}</span>
+       <span class="menu-arrow"></span>
+     </span>
+</ng-template>
+

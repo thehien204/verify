@@ -1,0 +1,7 @@
+<button type='button' class="me-3" nz-button nzType='default' (click)='onClose.emit()'
+        [nzLoading]='btnBusy'>
+  <i nz-icon nzType='close' nzTheme='outline'></i>{{closeTitle | translate}}
+</button>
+<button type='submit' nz-button nzType='primary' (click)='onSave.emit()' [nzLoading]='btnBusy'>
+  <i nz-icon nzType='save' nzTheme='outline'></i>{{saveTitle  | translate}}
+</button>

@@ -1,0 +1,100 @@
+<nz-spin [nzSpinning]="loading">
+  <div class="ord-grid">
+    <ng-container *ngIf="gridType==='ej2'" [ngTemplateOutlet]="tplEj2Grid"></ng-container>
+    <ng-container *ngIf="gridType==='ant'" [ngTemplateOutlet]="tplAntGrid"></ng-container>
+  </div>
+  <div class="ord-pagination" *ngIf="searchSchema" [hidden]="!showPagination">
+    <op #vcPagination [ofSearch]='searchSchema' [config]='pageConfig'
+        (itemsChange)="onItemPaginationChange(vcPagination.nzTable)"></op>
+  </div>
+</nz-spin>
+
+<!-- ej2 table -->
+<ng-template #tplEj2Grid>
+  <ejs-grid #vcGrid gridLines="Both" [dataSource]="dataSource"
+            (dataBound)='vcGrid.hideScroll()'
+            [height]="gridHeight"
+            [rowHeight]="rowHeight"
+            [allowTextWrap]='true'>
+    <e-columns>
+      <e-column headerText='' textAlign='Center' width='68' *ngIf="hasCheckboxColumn">
+        <ng-container *ngIf="allowCheckAll">
+          <ng-template #headerTemplate>
+            <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()"
+                   *ngIf="dataSource?.length > 0"
+                   [nzIndeterminate]="indeterminate"
+            ></label>
+          </ng-template>
+        </ng-container>
+        <ng-template #template let-data>
+          <label nz-checkbox [(ngModel)]="dataSource[data.index].checked"
+                 (ngModelChange)="updateSingleChecked()"></label>
+        </ng-template>
+      </e-column>
+      <e-column headerText='{{"STT"|translate}}' textAlign='Center' width='68' *ngIf="hasRowIndexColumn">
+        <ng-template #template let-data>
+          {{nzTable.getSkipCount() + (+data.index) + 1 }}
+        </ng-template>
+      </e-column>
+      <ng-container *ngFor="let column of listOfColumn;trackBy: trackByColumn">
+        <e-column [field]="column?.field"
+                  [headerText]="column?.headerText | translate"
+                  [width]="column?.width"
+                  [minWidth]="column?.minWidth"
+                  [textAlign]="column.textAlign"
+        >
+          <ng-container *ngIf="column.headerTemplate">
+            <ng-template #headerTemplate>
+              <ng-container [ngTemplateOutlet]="column.headerTemplate.template"></ng-container>
+            </ng-template>
+          </ng-container>
+          <ng-container *ngIf="column.contentTemplate">
+            <ng-template #template let-data>
+              <ng-container [ngTemplateOutlet]="column.contentTemplate.template"
+                            [ngTemplateOutletContext]="{$implicit:data}"></ng-container>
+            </ng-template>
+
+          </ng-container>
+        </e-column>
+      </ng-container>
+    </e-columns>
+
+  </ejs-grid>
+</ng-template>
+
+<!-- ant table -->
+<ng-template #tplAntGrid>
+  <o-table [items]="dataSource" [skipCount]="nzTable.skip">
+    <o-column headerText='' cellAlign='center' [width]='68' *ngIf="hasCheckboxColumn">
+      <ng-template otHeader>
+        <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()"
+               *ngIf="dataSource?.length > 0 && allowCheckAll"
+               [nzIndeterminate]="indeterminate"
+        ></label>
+      </ng-template>
+      <ng-template otCell let-data>
+        <label nz-checkbox [(ngModel)]="data.checked"
+               (ngModelChange)="updateSingleChecked()"></label>
+      </ng-template>
+    </o-column>
+    <o-column type='rowIndex' [width]='80' cellAlign='center' headerText='STT' *ngIf="hasRowIndexColumn"></o-column>
+    <ng-container *ngFor="let column of listOfColumn;trackBy: trackByColumn">
+      <o-column [headerText]="column?.headerText | translate"
+                [width]="column?.width"
+                [cellAlign]="column.cellAlign"
+      >
+        <ng-template otHeader>
+          <ng-container [ngTemplateOutlet]="column?.headerTemplate?.template"></ng-container>
+        </ng-template>
+        <ng-template otCell let-data>
+          <ng-container *ngIf="column?.contentTemplate?.template;else tplNotCellTemplate"
+                        [ngTemplateOutlet]="column.contentTemplate.template"
+                        [ngTemplateOutletContext]="{$implicit:data}"></ng-container>
+          <ng-template #tplNotCellTemplate>
+            {{data[column.field]}}
+          </ng-template>
+        </ng-template>
+      </o-column>
+    </ng-container>
+  </o-table>
+</ng-template>
